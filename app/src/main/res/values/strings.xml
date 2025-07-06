@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">todo_app</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="phone_number">Phone number</string>
+    <string name="sign_in">Sign In</string>
+    <string name="didn_t_have_any_account_msg">Didn’t have any account?</string>
+    <string name="sign_up_here_word">Sign Up here</string>
+</resources>
