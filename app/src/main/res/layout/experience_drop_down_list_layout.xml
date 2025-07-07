@@ -12,6 +12,8 @@
     app:boxCornerRadiusBottomStart="10sp"
     app:boxCornerRadiusTopEnd="10sp"
     app:boxCornerRadiusTopStart="10sp"
+    android:id="@+id/experience_level_layout"
+
     app:endIconMode="dropdown_menu">
 
     <AutoCompleteTextView

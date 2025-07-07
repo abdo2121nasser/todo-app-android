@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
 
+<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/phone_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="20sp"
     android:layout_marginVertical="10sp"
-    app:strokeWidth="2dp">
+    app:boxBackgroundMode="outline"
+    app:boxStrokeWidth="1dp"
+    app:errorTextAppearance="@style/TextAppearance.MaterialComponents.Caption"
+    app:startIconDrawable="@null">
 
-    <com.google.android.material.textfield.TextInputLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:boxBackgroundMode="outline"
-        app:boxStrokeWidth="1dp"
-        app:startIconDrawable="@null">
+        android:layout_height="match_parent"
+        app:cardCornerRadius="12dp"
+        app:strokeColor="@color/grey"
+        app:strokeWidth="1dp"
+        android:id="@+id/phone_container"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,7 +45,8 @@
                 android:hint="@string/phone_number"
                 android:inputType="phone" />
         </LinearLayout>
-    </com.google.android.material.textfield.TextInputLayout>
-</com.google.android.material.card.MaterialCardView>
+
+    </com.google.android.material.card.MaterialCardView>
+</com.google.android.material.textfield.TextInputLayout>
 
 

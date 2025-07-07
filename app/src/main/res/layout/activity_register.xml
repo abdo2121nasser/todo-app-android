@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <ImageView
@@ -27,6 +27,7 @@
             android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/name_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20sp"
@@ -34,34 +35,37 @@
             app:boxCornerRadiusBottomEnd="10sp"
             app:boxCornerRadiusBottomStart="10sp"
             app:boxCornerRadiusTopEnd="10sp"
-            app:boxCornerRadiusTopStart="10sp"
-            >
+            app:boxCornerRadiusTopStart="10sp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/name_hint"
-                android:inputType="text" />
+                android:inputType="textPersonName" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <include layout="@layout/phone_input_layout" />
+        <include
+            android:id="@+id/phone_layout"
+            layout="@layout/phone_input_layout" />
+
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/no_experience_years_layout"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20sp"
             app:boxCornerRadiusBottomEnd="10sp"
             app:boxCornerRadiusBottomStart="10sp"
             app:boxCornerRadiusTopEnd="10sp"
-            app:boxCornerRadiusTopStart="10sp"
-            >
+            app:boxCornerRadiusTopStart="10sp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/no_experience_years"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/experience_hint"
-                android:inputType="text" />
+                android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <include
@@ -69,11 +73,8 @@
             layout="@layout/experience_drop_down_list_layout" />
 
 
-
-
-
-
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/address_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20sp"
@@ -82,6 +83,7 @@
             app:boxCornerRadiusBottomStart="10sp"
             app:boxCornerRadiusTopEnd="10sp"
             app:boxCornerRadiusTopStart="10sp"
+
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -93,13 +95,16 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <include layout="@layout/password_input_layout" />
+        <include
+            android:id="@+id/password_layout"
+            layout="@layout/password_input_layout" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/sign_in_button"
+            android:id="@+id/sign_up_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20sp"
+            android:onClick="signUp"
             android:paddingVertical="20sp"
             android:text="@string/sign_up"
             app:cornerRadius="10sp" />
