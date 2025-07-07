@@ -1,6 +1,5 @@
 package com.example.todo_app.authentication_feature.presentation_layer
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -8,12 +7,21 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.todo_app.R
+import com.example.todo_app.authentication_feature.data_layer.AuthApi
+import com.example.todo_app.authentication_feature.data_layer.SignUpModel
+import com.example.todo_app.authentication_feature.data_layer.SignUpRequest
 import com.example.todo_app.databinding.ActivityRegisterBinding
 import com.example.todo_app.databinding.PasswordInputLayoutBinding
 import com.example.todo_app.databinding.PhoneInputLayoutBinding
+import com.example.todo_app.utils.ApiConstants
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
-import java.lang.Error
+import com.google.android.material.textfield.TextInputLayout
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -23,7 +31,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var phoneNumber: PhoneInputLayoutBinding
     private lateinit var experienceLevel: AutoCompleteTextView
     private lateinit var address: TextInputEditText
-    private lateinit var password: PasswordInputLayoutBinding
+    private lateinit var passwordBinding: PasswordInputLayoutBinding
     private lateinit var signUpButton: MaterialButton
 
 
@@ -41,7 +49,7 @@ class RegisterActivity : AppCompatActivity() {
         numberOfExperience = registerBinding.noExperienceYears
         experienceLevel = registerBinding.experienceLevel.dropdownMenu
         address = registerBinding.address
-        password = registerBinding.passwordLayout
+        passwordBinding = registerBinding.passwordLayout
         signUpButton = registerBinding.signUpButton
         setupCountryDropdown()
 
@@ -55,7 +63,6 @@ class RegisterActivity : AppCompatActivity() {
     }
 
 
-    @SuppressLint("ResourceAsColor")
     private fun validateData(): Boolean {
         var isValid = true
 
@@ -68,11 +75,11 @@ class RegisterActivity : AppCompatActivity() {
 
         if (phoneNumber.phoneEditText.text.isNullOrBlank()) {
             phoneNumber.phoneLayout.error = "Phone number is required"
-            phoneNumber.phoneContainer.strokeColor= getColor(R.color.red)
+            phoneNumber.phoneContainer.strokeColor = getColor(R.color.red)
             isValid = false
         } else {
             phoneNumber.phoneLayout.error = null
-            phoneNumber.phoneContainer.strokeColor= getColor(R.color.grey)
+            phoneNumber.phoneContainer.strokeColor = getColor(R.color.grey)
 
         }
 
@@ -97,30 +104,52 @@ class RegisterActivity : AppCompatActivity() {
             registerBinding.addressLayout.error = null
         }
 
-        if (password.password.text.isNullOrBlank()) {
-            password.passwordLayout.error = "Password is required"
+        if (passwordBinding.password.text.isNullOrBlank()) {
+            passwordBinding.passwordLayout.error = "Password is required"
+
             isValid = false
-        } else if (password.password.text!!.length < 6) {
-            password.passwordLayout.error = "Password must be at least 6 characters"
+        } else if (passwordBinding.password.text!!.length < 6) {
+            passwordBinding.passwordLayout.error = "Password must be at least 6 characters"
+
             isValid = false
         } else {
-            password.passwordLayout.error = null
+            passwordBinding.passwordLayout.error = null
         }
         return isValid
 
     }
 
     fun signUp(view: View) {
-            try {
-                if (validateData()) {
-                    Log.d("test", "valid data")
-                }
-            } catch (e: Error) {
-                Log.d("test", e.message.toString())
+        if (validateData()) {
+            requestSignUp()
+        }
+    }
+
+    private fun requestSignUp() {
+        val signUpRequest: SignUpRequest = SignUpRequest(
+            name = name.text.toString(),
+            phone ="+201010658254",
+//            phoneNumber.countryCodeHolder.selectedCountryCode.toString() + phoneNumber.phoneEditText.text.toString(),
+            experience = numberOfExperience.text.toString().toInt(),
+            level = experienceLevel.text.toString(),
+            address = address.text.toString(),
+            password = passwordBinding.password.text.toString()
+        )
+        val retrofit = Retrofit.Builder()
+            .baseUrl(ApiConstants.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create()).build()
+        val request = retrofit.create(AuthApi::class.java)
+        request.signUp(signUpRequest = signUpRequest).enqueue(object : Callback<SignUpModel>{
+            override fun onResponse(call: Call<SignUpModel>, response: Response<SignUpModel>) {
 
             }
-        }
 
+            override fun onFailure(call: Call<SignUpModel>, t: Throwable) {
+                Log.d("request",t.toString()+"eeeeeeeeeeeeeeeeeeeeeeeee")
 
+            }
+
+        })
+    }
 
 }
