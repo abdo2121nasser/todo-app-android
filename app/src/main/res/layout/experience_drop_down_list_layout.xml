@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginTop="10sp"
+    android:hint="@string/experience_level_hint"
+    app:boxCornerRadiusBottomEnd="10sp"
+    app:boxCornerRadiusBottomStart="10sp"
+    app:boxCornerRadiusTopEnd="10sp"
+    app:boxCornerRadiusTopStart="10sp"
+    app:endIconMode="dropdown_menu">
+
+    <AutoCompleteTextView
+        android:id="@+id/dropdown_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dropDownHeight="wrap_content"
+        android:importantForAutofill="no"
+        android:inputType="none"
+        android:paddingHorizontal="10sp"
+        android:paddingVertical="15sp"
+        />
+</com.google.android.material.textfield.TextInputLayout>
+
+

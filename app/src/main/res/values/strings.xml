@@ -4,6 +4,12 @@
     <string name="password">Password</string>
     <string name="phone_number">Phone number</string>
     <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
     <string name="didn_t_have_any_account_msg">Didn’t have any account?</string>
     <string name="sign_up_here_word">Sign Up here</string>
+    <string name="register">Register</string>
+    <string name="name_hint">Name</string>
+    <string name="experience_hint">Years Of Experience</string>
+    <string name="address_hint">Your Address</string>
+    <string name="experience_level_hint">Experience Level</string>
 </resources>

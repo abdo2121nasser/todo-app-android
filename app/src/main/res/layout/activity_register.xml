@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".authentication_feature.presentation_layer.RegisterActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="400sp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/welcome_image" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20sp"
+            android:layout_marginVertical="10sp"
+            android:text="@string/register"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20sp"
+            android:layout_marginVertical="10sp"
+            app:boxCornerRadiusBottomEnd="10sp"
+            app:boxCornerRadiusBottomStart="10sp"
+            app:boxCornerRadiusTopEnd="10sp"
+            app:boxCornerRadiusTopStart="10sp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/name_hint"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <include layout="@layout/phone_input_layout" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20sp"
+            app:boxCornerRadiusBottomEnd="10sp"
+            app:boxCornerRadiusBottomStart="10sp"
+            app:boxCornerRadiusTopEnd="10sp"
+            app:boxCornerRadiusTopStart="10sp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/no_experience_years"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/experience_hint"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <include
+            android:id="@+id/experience_level"
+            layout="@layout/experience_drop_down_list_layout" />
+
+
+
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20sp"
+            android:layout_marginTop="10sp"
+            app:boxCornerRadiusBottomEnd="10sp"
+            app:boxCornerRadiusBottomStart="10sp"
+            app:boxCornerRadiusTopEnd="10sp"
+            app:boxCornerRadiusTopStart="10sp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/address_hint"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <include layout="@layout/password_input_layout" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20sp"
+            android:paddingVertical="20sp"
+            android:text="@string/sign_up"
+            app:cornerRadius="10sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20sp"
+            android:layout_marginVertical="16sp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/didn_t_have_any_account_msg"
+                android:textColor="@color/grey"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10sp"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="goToSignUpScreen"
+                android:text="@string/sign_up_here_word"
+                android:textColor="@color/vilote"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</ScrollView>
