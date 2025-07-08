@@ -5,7 +5,7 @@ object ApiConstants {
 
     object Endpoints {
         const val SIGN_UP = "/auth/register"
-        const val LOGIN = "auth/login"
+        const val  SIGN_IN = "/auth/login"
         // Add other endpoints here
     }
 }

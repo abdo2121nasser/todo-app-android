@@ -1,9 +1,8 @@
-package com.example.todo_app.authentication_feature.data_layer
+package com.example.todo_app.authentication_feature.data_layer.entities
 
 import com.google.gson.annotations.SerializedName
-import java.util.concurrent.Callable
 
-data class SignUpModel(
+data class AuthResponseModel(
     @SerializedName("_id")
     val id: String,
     @SerializedName("access_token")

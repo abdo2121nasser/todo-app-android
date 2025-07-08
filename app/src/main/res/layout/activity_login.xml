@@ -9,8 +9,8 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:scaleType="centerCrop"
         android:src="@drawable/welcome_image" />
 
@@ -24,9 +24,13 @@
         android:textStyle="bold" />
 
 
-    <include layout="@layout/phone_input_layout" />
+    <include
+        android:id="@+id/phone_layout"
+        layout="@layout/phone_input_layout" />
 
-    <include layout="@layout/password_input_layout" />
+    <include
+        android:id="@+id/password_layout"
+        layout="@layout/password_input_layout" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/sign_in_button"
@@ -35,7 +39,16 @@
         android:layout_marginHorizontal="20sp"
         android:paddingVertical="20sp"
         android:text="@string/sign_in"
+        android:onClick="signIn"
         app:cornerRadius="10sp" />
+    <ProgressBar
+        android:id="@+id/circularProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone" />
+
 
     <LinearLayout
         android:layout_width="match_parent"

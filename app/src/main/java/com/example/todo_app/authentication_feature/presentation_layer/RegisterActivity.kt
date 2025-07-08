@@ -2,26 +2,20 @@ package com.example.todo_app.authentication_feature.presentation_layer
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.todo_app.R
-import com.example.todo_app.authentication_feature.data_layer.AuthApi
 import com.example.todo_app.authentication_feature.data_layer.AuthenticationRepo
-import com.example.todo_app.authentication_feature.data_layer.SignUpRequestBody
+import com.example.todo_app.authentication_feature.data_layer.entities.SignUpRequestBodyEntity
 import com.example.todo_app.databinding.ActivityRegisterBinding
 import com.example.todo_app.databinding.PasswordInputLayoutBinding
 import com.example.todo_app.databinding.PhoneInputLayoutBinding
-import com.example.todo_app.utils.ApiConstants
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -33,7 +27,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var address: TextInputEditText
     private lateinit var passwordBinding: PasswordInputLayoutBinding
     private lateinit var signUpButton: MaterialButton
-    private  var authRepo: AuthenticationRepo= AuthenticationRepo()
+    private var authRepo: AuthenticationRepo = AuthenticationRepo()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         registerBinding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -53,6 +47,11 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
+    fun goToSignInScreen(view: View) {
+        startActivity(Intent(this, LoginActivity::class.java))
+        finishAffinity()
+    }
+
     private fun setupCountryDropdown() {
         val countries = listOf("fresh", "junior", "midLevel", "senior")
         val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, countries)
@@ -61,7 +60,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
 
-    private fun validateData(): Boolean {
+    private val  isValidateData: Boolean get() {
         var isValid = true
 
         if (name.text.isNullOrBlank()) {
@@ -75,13 +74,11 @@ class RegisterActivity : AppCompatActivity() {
             phoneNumber.phoneLayout.error = "Phone number is required"
             phoneNumber.phoneContainer.strokeColor = getColor(R.color.red)
             isValid = false
-        }
-        else if( phoneNumber.phoneEditText.text!!.length in 7..15){
+        } else if (phoneNumber.phoneEditText.text!!.length !in 7..15) {
             phoneNumber.phoneLayout.error = "In Valid Phone Number"
             phoneNumber.phoneContainer.strokeColor = getColor(R.color.red)
             isValid = false
-        }
-        else {
+        } else {
             phoneNumber.phoneLayout.error = null
             phoneNumber.phoneContainer.strokeColor = getColor(R.color.grey)
 
@@ -122,8 +119,8 @@ class RegisterActivity : AppCompatActivity() {
         return isValid
     }
 
-    private fun getRequestSignUpBody(): SignUpRequestBody {
-        return SignUpRequestBody(
+    private val signUpRequestBodyEntity: SignUpRequestBodyEntity
+        get() = SignUpRequestBodyEntity(
             name = name.text.toString(),
             '+' + phoneNumber.countryCodeHolder.selectedCountryCode.toString() + phoneNumber.phoneEditText.text.toString(),
             experience = numberOfExperience.text.toString().toInt(),
@@ -131,23 +128,18 @@ class RegisterActivity : AppCompatActivity() {
             address = address.text.toString(),
             password = passwordBinding.password.text.toString()
         )
-    }
+
 
     fun signUp(view: View) {
-        if (validateData()) {
+        if (isValidateData) {
             lifecycleScope.launch {
-                view.visibility= View.GONE
-                registerBinding.circularProgressBar.visibility=View.VISIBLE
-                authRepo.signUpRequest(getRequestSignUpBody())
-                view.visibility= View.VISIBLE
-                registerBinding.circularProgressBar.visibility=View.GONE
+                view.visibility = View.GONE
+                registerBinding.circularProgressBar.visibility = View.VISIBLE
+                authRepo.signUpRequest(signUpRequestBodyEntity)
+                view.visibility = View.VISIBLE
+                registerBinding.circularProgressBar.visibility = View.GONE
             }
         }
-    }
-
-    fun goToSignInScreen(view: View) {
-        startActivity(Intent(this,LoginActivity::class.java))
-        finishAffinity()
     }
 
 
