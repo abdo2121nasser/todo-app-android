@@ -1,5 +1,6 @@
 package com.example.todo_app.authentication_feature.presentation_layer
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -17,6 +18,7 @@ import com.example.todo_app.databinding.PhoneInputLayoutBinding
 import com.example.todo_app.utils.ApiConstants
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -31,9 +33,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var address: TextInputEditText
     private lateinit var passwordBinding: PasswordInputLayoutBinding
     private lateinit var signUpButton: MaterialButton
-    private  var authRepo: AuthenticationRepo=AuthenticationRepo()
-
-
+    private  var authRepo: AuthenticationRepo= AuthenticationRepo()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         registerBinding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -75,7 +75,13 @@ class RegisterActivity : AppCompatActivity() {
             phoneNumber.phoneLayout.error = "Phone number is required"
             phoneNumber.phoneContainer.strokeColor = getColor(R.color.red)
             isValid = false
-        } else {
+        }
+        else if( phoneNumber.phoneEditText.text!!.length in 7..15){
+            phoneNumber.phoneLayout.error = "In Valid Phone Number"
+            phoneNumber.phoneContainer.strokeColor = getColor(R.color.red)
+            isValid = false
+        }
+        else {
             phoneNumber.phoneLayout.error = null
             phoneNumber.phoneContainer.strokeColor = getColor(R.color.grey)
 
@@ -130,12 +136,19 @@ class RegisterActivity : AppCompatActivity() {
     fun signUp(view: View) {
         if (validateData()) {
             lifecycleScope.launch {
+                view.visibility= View.GONE
+                registerBinding.circularProgressBar.visibility=View.VISIBLE
                 authRepo.signUpRequest(getRequestSignUpBody())
+                view.visibility= View.VISIBLE
+                registerBinding.circularProgressBar.visibility=View.GONE
             }
         }
     }
 
-
+    fun goToSignInScreen(view: View) {
+        startActivity(Intent(this,LoginActivity::class.java))
+        finishAffinity()
+    }
 
 
 }

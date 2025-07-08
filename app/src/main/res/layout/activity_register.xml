@@ -106,8 +106,18 @@
             android:layout_marginHorizontal="20sp"
             android:onClick="signUp"
             android:paddingVertical="20sp"
+
             android:text="@string/sign_up"
             app:cornerRadius="10sp" />
+
+        <ProgressBar
+            android:id="@+id/circularProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/blue"
+            android:visibility="gone" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -129,11 +139,12 @@
                 android:layout_marginHorizontal="10sp"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="goToSignUpScreen"
-                android:text="@string/sign_up_here_word"
+                android:onClick="goToSignInScreen"
+                android:text="@string/sign_in_here_word"
                 android:textColor="@color/vilote"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                />
         </LinearLayout>
 
 
