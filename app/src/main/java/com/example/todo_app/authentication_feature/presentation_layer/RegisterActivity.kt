@@ -27,7 +27,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var address: TextInputEditText
     private lateinit var passwordBinding: PasswordInputLayoutBinding
     private lateinit var signUpButton: MaterialButton
-    private var authRepo: AuthenticationRepo = AuthenticationRepo()
+    private var authRepo: AuthenticationRepo = AuthenticationRepo(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         registerBinding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -60,64 +60,66 @@ class RegisterActivity : AppCompatActivity() {
     }
 
 
-    private val  isValidateData: Boolean get() {
-        var isValid = true
+    private val isValidateData: Boolean
+        get() {
+            var isValid = true
 
-        if (name.text.isNullOrBlank()) {
-            registerBinding.nameLayout.error = "Name is required"
-            isValid = false
-        } else {
-            registerBinding.nameLayout.error = null
+            if (name.text.isNullOrBlank()) {
+                registerBinding.nameLayout.error = "Name is required"
+                isValid = false
+            } else {
+                registerBinding.nameLayout.error = null
+            }
+
+            if (phoneNumber.phoneEditText.text.isNullOrBlank()) {
+                phoneNumber.phoneLayout.error = "Phone number is required"
+                phoneNumber.phoneContainer.strokeColor = getColor(R.color.red)
+                isValid = false
+            } else if (phoneNumber.phoneEditText.text!!.length !in 7..15) {
+                phoneNumber.phoneLayout.error = "In Valid Phone Number"
+                phoneNumber.phoneContainer.strokeColor = getColor(R.color.red)
+                isValid = false
+            } else {
+                phoneNumber.phoneLayout.error = null
+                phoneNumber.phoneContainer.strokeColor = getColor(R.color.grey)
+
+            }
+
+            if (numberOfExperience.text.isNullOrBlank()) {
+                registerBinding.noExperienceYearsLayout.error = "Enter number of years"
+                isValid = false
+            } else {
+                registerBinding.noExperienceYearsLayout.error = null
+            }
+
+            if (experienceLevel.text.isNullOrBlank()) {
+                registerBinding.experienceLevel.experienceLevelLayout.error =
+                    "Select experience level"
+                isValid = false
+            } else {
+                registerBinding.experienceLevel.experienceLevelLayout.error = null
+            }
+
+            if (address.text.isNullOrBlank()) {
+                registerBinding.addressLayout.error = "Address is required"
+                isValid = false
+            } else {
+                registerBinding.addressLayout.error = null
+            }
+
+            if (passwordBinding.password.text.isNullOrBlank()) {
+                passwordBinding.passwordLayout.error = "Password is required"
+
+                isValid = false
+            } else if (passwordBinding.password.text!!.length < 6) {
+                passwordBinding.passwordLayout.error = "Password must be at least 6 characters"
+
+                isValid = false
+            } else {
+                passwordBinding.passwordLayout.error = null
+            }
+            return isValid
         }
-
-        if (phoneNumber.phoneEditText.text.isNullOrBlank()) {
-            phoneNumber.phoneLayout.error = "Phone number is required"
-            phoneNumber.phoneContainer.strokeColor = getColor(R.color.red)
-            isValid = false
-        } else if (phoneNumber.phoneEditText.text!!.length !in 7..15) {
-            phoneNumber.phoneLayout.error = "In Valid Phone Number"
-            phoneNumber.phoneContainer.strokeColor = getColor(R.color.red)
-            isValid = false
-        } else {
-            phoneNumber.phoneLayout.error = null
-            phoneNumber.phoneContainer.strokeColor = getColor(R.color.grey)
-
-        }
-
-        if (numberOfExperience.text.isNullOrBlank()) {
-            registerBinding.noExperienceYearsLayout.error = "Enter number of years"
-            isValid = false
-        } else {
-            registerBinding.noExperienceYearsLayout.error = null
-        }
-
-        if (experienceLevel.text.isNullOrBlank()) {
-            registerBinding.experienceLevel.experienceLevelLayout.error = "Select experience level"
-            isValid = false
-        } else {
-            registerBinding.experienceLevel.experienceLevelLayout.error = null
-        }
-
-        if (address.text.isNullOrBlank()) {
-            registerBinding.addressLayout.error = "Address is required"
-            isValid = false
-        } else {
-            registerBinding.addressLayout.error = null
-        }
-
-        if (passwordBinding.password.text.isNullOrBlank()) {
-            passwordBinding.passwordLayout.error = "Password is required"
-
-            isValid = false
-        } else if (passwordBinding.password.text!!.length < 6) {
-            passwordBinding.passwordLayout.error = "Password must be at least 6 characters"
-
-            isValid = false
-        } else {
-            passwordBinding.passwordLayout.error = null
-        }
-        return isValid
-    }
 
     private val signUpRequestBodyEntity: SignUpRequestBodyEntity
         get() = SignUpRequestBodyEntity(
