@@ -17,4 +17,13 @@ object Constants {
             // Add other endpoints here
         }
     }
+    object UiStrings {
+        const val ALL = "All"
+        const val IN_PROGRESS = "Inpogress"
+        const val WAITING = "Waiting"
+        const val FINISH = "Finished"
+
+
+    }
+
 }

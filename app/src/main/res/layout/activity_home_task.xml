@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="20dp"
+    tools:context=".task_feature.presentation.HomeTaskActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20sp"
+        android:text="Logo"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/profile_icon"
+        android:layout_width="30sp"
+        android:layout_height="30sp"
+        android:layout_marginHorizontal="20sp"
+        android:layout_marginVertical="20sp"
+        android:src="@drawable/account_icon"
+        app:layout_constraintEnd_toStartOf="@id/sign_out_icon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/sign_out_icon"
+        android:layout_width="30sp"
+        android:layout_height="30sp"
+        android:layout_marginVertical="20sp"
+        android:src="@drawable/sign_out_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Space
+        android:id="@+id/header_title_spacer"
+        android:layout_width="match_parent"
+        android:layout_height="10sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_icon" />
+    <!--////////////////////// header section /////////////////////////////-->
+
+    <TextView
+        android:id="@+id/my_task_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20sp"
+        android:text="My Tasks"
+        android:textColor="@color/grey"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_title_spacer" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/category_recycle_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/my_task_title"
+        android:layout_marginVertical="10sp"
+        tools:listitem="@layout/category_item" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
