@@ -1,23 +1,14 @@
-package com.example.todo_app.task_feature.presentation
+package com.example.todo_app.features.task_feature.presentation
 
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.graphics.toColor
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.target.Target
-import com.bumptech.glide.request.transition.Transition
 import com.example.todo_app.R
 import com.example.todo_app.databinding.TodoItemBinding
-import com.example.todo_app.task_feature.data.TodoItemEntity
+import com.example.todo_app.features.task_feature.data.entities.TodoItemEntity
 
 class TodoAdapter(private val activity: HomeTaskActivity, private val todoItems: List<TodoItemEntity>) :
     RecyclerView.Adapter<TodoAdapter.Holder>() {

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".authentication_feature.presentation_layer.LoginActivity">
+    tools:context=".features.authentication_feature.presentation_layer.LoginActivity">
 
     <ImageView
         android:layout_width="match_parent"

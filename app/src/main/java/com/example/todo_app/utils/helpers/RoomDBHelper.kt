@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.todo_app.authentication_feature.data_layer.entities.AuthResponseModel
-import com.example.todo_app.authentication_feature.data_layer.interfaces.AuthDao
+import com.example.todo_app.features.authentication_feature.data_layer.entities.AuthResponseModel
+import com.example.todo_app.features.authentication_feature.data_layer.interfaces.AuthDao
 import com.example.todo_app.utils.Constants
 
 @Database(entities = [AuthResponseModel::class], version = 1)

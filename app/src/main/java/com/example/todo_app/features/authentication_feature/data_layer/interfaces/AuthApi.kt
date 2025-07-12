@@ -1,8 +1,8 @@
-package com.example.todo_app.authentication_feature.data_layer.interfaces
+package com.example.todo_app.features.authentication_feature.data_layer.interfaces
 
-import com.example.todo_app.authentication_feature.data_layer.entities.AuthResponseModel
-import com.example.todo_app.authentication_feature.data_layer.entities.SignInRequestBodyEntity
-import com.example.todo_app.authentication_feature.data_layer.entities.SignUpRequestBodyEntity
+import com.example.todo_app.features.authentication_feature.data_layer.entities.AuthResponseModel
+import com.example.todo_app.features.authentication_feature.data_layer.entities.SignInRequestBodyEntity
+import com.example.todo_app.features.authentication_feature.data_layer.entities.SignUpRequestBodyEntity
 import com.example.todo_app.utils.Constants
 import retrofit2.*
 import retrofit2.http.*

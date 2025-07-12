@@ -1,4 +1,4 @@
-package com.example.todo_app.authentication_feature.data_layer.entities
+package com.example.todo_app.features.authentication_feature.data_layer.entities
 
 import com.google.gson.annotations.SerializedName
 

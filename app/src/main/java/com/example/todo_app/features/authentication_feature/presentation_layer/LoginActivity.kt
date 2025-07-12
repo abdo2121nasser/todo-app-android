@@ -1,4 +1,4 @@
-package com.example.todo_app.authentication_feature.presentation_layer
+package com.example.todo_app.features.authentication_feature.presentation_layer
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,8 +7,8 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.example.todo_app.R
-import com.example.todo_app.authentication_feature.data_layer.AuthenticationRepo
-import com.example.todo_app.authentication_feature.data_layer.entities.SignInRequestBodyEntity
+import com.example.todo_app.features.authentication_feature.data_layer.AuthenticationRepo
+import com.example.todo_app.features.authentication_feature.data_layer.entities.SignInRequestBodyEntity
 import com.example.todo_app.databinding.ActivityLoginBinding
 import com.example.todo_app.databinding.PasswordInputLayoutBinding
 import com.example.todo_app.databinding.PhoneInputLayoutBinding

@@ -8,15 +8,26 @@ object Constants {
 
 
     }
+
     object Api {
         const val BASE_URL = "https://todo.iraqsapp.com"
 
         object Endpoints {
             const val SIGN_UP = "/auth/register"
             const val SIGN_IN = "/auth/login"
-            // Add other endpoints here
+            const val TODO = "/todos?"
+        }
+
+        object Queries {
+            const val PAGE = "page"
+        }
+
+        object Headers {
+            const val AUTH = "Authorization"
+            const val BEAR_TOKEN = "Bearer "
         }
     }
+
     object UiStrings {
         const val ALL = "All"
         const val IN_PROGRESS = "Inpogress"

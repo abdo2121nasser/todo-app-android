@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".authentication_feature.presentation_layer.RegisterActivity">
+    tools:context=".features.authentication_feature.presentation_layer.RegisterActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
