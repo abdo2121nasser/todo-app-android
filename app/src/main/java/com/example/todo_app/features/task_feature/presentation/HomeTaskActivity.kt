@@ -25,10 +25,10 @@ typealias header = Constants.Api.Headers
 class HomeTaskActivity : AppCompatActivity() {
     private lateinit var homeBinding: ActivityHomeTaskBinding
     private lateinit var progressBar: ProgressBar
-    private val todoRepo: TodoRepository = TodoRepository()
+    private val todoRepo: TodoRepository = TodoRepository(this)
     private val categories: List<String> = listOf(ui.ALL, ui.IN_PROGRESS, ui.WAITING, ui.FINISH)
     private val todoItems = MutableLiveData<List<TodoItemEntity>>(emptyList())
-    private var authModel: LiveData<AuthResponseModel> =
+    private val authModel: LiveData<AuthResponseModel> =
         RoomDBHelper.getInstance(this).authDao.get()
 
 
@@ -43,7 +43,7 @@ class HomeTaskActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         authModel.observe(this) { model ->
-            if (model != null) {
+            if (model != null && todoItems.value.isNullOrEmpty()) {
                 fetchTodoItems()
             }
         }
@@ -53,18 +53,14 @@ class HomeTaskActivity : AppCompatActivity() {
         progressBar = homeBinding.progressBar
         homeBinding.categoryRecycleView.adapter = CategoryAdapter(this, categories)
         buildTodoRecycleView()
-
     }
 
     private fun buildTodoRecycleView() {
-
         todoItems.observe(this) { items ->
             homeBinding.todoRecycleView.adapter =
                 TodoAdapter(this@HomeTaskActivity, items ?: emptyList())
             progressBar.visibility = View.GONE
             homeBinding.todoRecycleView.visibility = View.VISIBLE
-
-
         }
     }
 
@@ -77,8 +73,7 @@ class HomeTaskActivity : AppCompatActivity() {
         }
         lifecycleScope.launch {
             val items = todoRepo.getTodoPage(1, model)
-            Log.d("recycle_view", "init " + items.toString())
-
+            Log.d("recycle_view", "init $items")
             todoItems.postValue(items)
         }
     }
