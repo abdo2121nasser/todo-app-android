@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 app:ccp_showFlag="true"
+                app:ccp_defaultNameCode="EG"
                 app:ccp_showFullName="false"
                 app:ccp_showNameCode="false"
                 app:ccp_showPhoneCode="true" />

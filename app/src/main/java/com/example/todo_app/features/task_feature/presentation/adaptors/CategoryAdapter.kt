@@ -1,4 +1,4 @@
-package com.example.todo_app.features.task_feature.presentation
+package com.example.todo_app.features.task_feature.presentation.adaptors
 
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todo_app.R
 import com.example.todo_app.databinding.CategoryItemBinding
+import com.example.todo_app.features.task_feature.presentation.HomeTaskActivity
 
 class CategoryAdapter(
     private val activity: HomeTaskActivity,

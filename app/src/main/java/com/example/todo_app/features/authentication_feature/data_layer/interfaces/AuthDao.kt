@@ -1,5 +1,6 @@
 package com.example.todo_app.features.authentication_feature.data_layer.interfaces
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
@@ -11,7 +12,7 @@ import com.example.todo_app.features.authentication_feature.data_layer.entities.
 interface AuthDao {
 
     @Query("SELECT * FROM `authentication entity` LIMIT 1")
-    suspend fun get(): AuthResponseModel?
+     fun get(): LiveData<AuthResponseModel>
 
     @Upsert
     suspend fun upsert(auth: AuthResponseModel)
