@@ -2,6 +2,7 @@ package com.example.todo_app.features.authentication_feature.data_layer.interfac
 
 import androidx.room.Dao
 import androidx.room.Delete
+import androidx.room.Query
 import androidx.room.Upsert
 import com.example.todo_app.features.authentication_feature.data_layer.entities.AuthResponseModel
 
@@ -9,11 +10,14 @@ import com.example.todo_app.features.authentication_feature.data_layer.entities.
 @Dao
 interface AuthDao {
 
-    @Upsert
-    fun upsert(auth: AuthResponseModel)
-    @Delete
-    fun delete(auth: AuthResponseModel)
+    @Query("SELECT * FROM `authentication entity` LIMIT 1")
+    suspend fun get(): AuthResponseModel?
 
+    @Upsert
+    suspend fun upsert(auth: AuthResponseModel)
+
+    @Delete
+    suspend fun delete(auth: AuthResponseModel)
 
 
 }

@@ -41,8 +41,6 @@ class HomeTaskActivity : AppCompatActivity() {
             progressBar.visibility = View.GONE
             homeBinding.todoRecycleView.visibility = View.VISIBLE
         }
-
-
     }
 
 

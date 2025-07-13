@@ -36,5 +36,11 @@ object Constants {
 
 
     }
+  object NavigationExtras {
+        const val AUTH = "auth model extra"
+
+
+
+    }
 
 }
