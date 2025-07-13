@@ -1,14 +1,20 @@
 package com.example.todo_app.features.task_feature.presentation
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.todo_app.R
 import com.example.todo_app.databinding.TodoItemBinding
 import com.example.todo_app.features.task_feature.data.entities.TodoItemEntity
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class TodoAdapter(private val activity: HomeTaskActivity, private val todoItems: List<TodoItemEntity>) :
     RecyclerView.Adapter<TodoAdapter.Holder>() {
@@ -36,7 +42,8 @@ class TodoAdapter(private val activity: HomeTaskActivity, private val todoItems:
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.title.text = todoItems[position].title
         holder.subTitle.text = todoItems[position].subTitle
-        holder.date.text = todoItems[position].date
+        holder.date.text = formatDate(todoItems[position].date)
+
         Glide.with(activity)
             .load(todoItems[position].imageLink)
             .placeholder(R.drawable.round_square_place_holder_icon)
@@ -46,5 +53,15 @@ class TodoAdapter(private val activity: HomeTaskActivity, private val todoItems:
 
     }
 
+    private fun formatDate(dateStr: String): String {
+        return try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("d/M/yyyy", Locale.getDefault())
+            val date = inputFormat.parse(dateStr)
+            outputFormat.format(date!!)
+        } catch (e: Exception) {
+            dateStr
+        }
+    }
 
 }

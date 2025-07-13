@@ -18,7 +18,7 @@ data class AuthResponseModel(
 
     @ColumnInfo("access_token")
     @SerializedName("access_token")
-    val accessToken: String,
+    var accessToken: String,
 
     @ColumnInfo("refresh_token")
     @SerializedName("refresh_token")

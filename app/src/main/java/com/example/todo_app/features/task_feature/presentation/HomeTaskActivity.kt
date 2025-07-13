@@ -1,17 +1,22 @@
 package com.example.todo_app.features.task_feature.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.todo_app.databinding.ActivityHomeTaskBinding
+import com.example.todo_app.features.authentication_feature.data_layer.entities.AuthResponseModel
 import com.example.todo_app.features.task_feature.data.entities.TodoItemEntity
 import com.example.todo_app.features.task_feature.data.repositories.TodoRepository
 import com.example.todo_app.utils.Constants
 import kotlinx.coroutines.launch
 
 typealias ui = Constants.UiStrings
+typealias header = Constants.Api.Headers
 
 
 class HomeTaskActivity : AppCompatActivity() {
@@ -19,7 +24,9 @@ class HomeTaskActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private val todoRepo: TodoRepository = TodoRepository()
     private val categories: List<String> = listOf(ui.ALL, ui.IN_PROGRESS, ui.WAITING, ui.FINISH)
-    private lateinit var todoItems: List<TodoItemEntity>
+    private val todoItems = MutableLiveData<List<TodoItemEntity>>(emptyList())
+    private lateinit var authModel: AuthResponseModel
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,25 +36,42 @@ class HomeTaskActivity : AppCompatActivity() {
         initVariables()
 
     }
+    override fun onStart() {
+        super.onStart()
+        fetchTodoItems()
+    }
 
+    private fun initVariables() {
+     authModel=   intent.getParcelableExtra<AuthResponseModel>(Constants.NavigationExtras.AUTH)!!
+            .apply {
+                accessToken = header.BEAR_TOKEN + accessToken
+   }
+        progressBar = homeBinding.progressBar
+        homeBinding.categoryRecycleView.adapter = CategoryAdapter(this, categories)
+        buildTodoRecycleView()
+
+    }
+    private fun buildTodoRecycleView() {
+
+        todoItems.observe(this) { items ->
+                       homeBinding.todoRecycleView.adapter =
+                    TodoAdapter(this@HomeTaskActivity, items?: emptyList())
+                progressBar.visibility = View.GONE
+                homeBinding.todoRecycleView.visibility = View.VISIBLE
+
+
+        }
+    }
     private fun fetchTodoItems() {
         progressBar.visibility = View.VISIBLE
         homeBinding.todoRecycleView.visibility = View.GONE
         lifecycleScope.launch {
-            val token = Constants.Api.Headers.BEAR_TOKEN +
-                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjQ5ZmIyZWVmMGJmOTNkZDAwNzExYmEiLCJpYXQiOjE3NTIzMzYzNTEsImV4cCI6MTc1MjMzNjk1MX0.LHClrEdTVNDbToco-Roa1Sp6ta9u9LeI42dTr7FKsbw"
-            todoItems = todoRepo.getTodoPage(1, token)
-            homeBinding.todoRecycleView.adapter = TodoAdapter(this@HomeTaskActivity, todoItems)
-            progressBar.visibility = View.GONE
-            homeBinding.todoRecycleView.visibility = View.VISIBLE
+            val items = todoRepo.getTodoPage(1, authModel)
+            Log.d("recycle_view","init "+items.toString())
+
+            todoItems.postValue(items)
         }
     }
 
-
-    private fun initVariables() {
-        progressBar = homeBinding.progressBar
-        homeBinding.categoryRecycleView.adapter = CategoryAdapter(this, categories)
-        fetchTodoItems()
-    }
 
 }

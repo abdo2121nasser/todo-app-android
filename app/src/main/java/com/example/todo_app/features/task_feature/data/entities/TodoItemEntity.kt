@@ -1,3 +1,12 @@
 package com.example.todo_app.features.task_feature.data.entities
 
-data class TodoItemEntity(val imageLink:String,val title:String,val subTitle:String,val date:String)
+import com.google.gson.annotations.SerializedName
+
+data class TodoItemEntity(
+    @SerializedName("image")
+    val imageLink:String,
+    val title:String,
+    @SerializedName("desc")
+    val subTitle:String,
+    @SerializedName("createdAt")
+    val date:String)

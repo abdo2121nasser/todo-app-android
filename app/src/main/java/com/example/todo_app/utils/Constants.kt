@@ -15,11 +15,13 @@ object Constants {
         object Endpoints {
             const val SIGN_UP = "/auth/register"
             const val SIGN_IN = "/auth/login"
+            const val REFRESH = "/auth/refresh-token"
             const val TODO = "/todos?"
         }
 
         object Queries {
             const val PAGE = "page"
+            const val TOKEN = "token"
         }
 
         object Headers {
