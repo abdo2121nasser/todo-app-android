@@ -25,14 +25,14 @@ class TodoRepository(val activity: HomeTaskActivity) {
     ): List<TodoItemEntity> {
         return withContext(Dispatchers.IO) {
             try {
-                authModel.accessToken=Constants.Api.Headers.BEAR_TOKEN+ authModel.accessToken
-                val response = todoRetrofit.request.getTodoPage(pageNumber, authModel.accessToken)
+                val model = authModel.copy(accessToken = header.BEAR_TOKEN + authModel.accessToken)
+                val response = todoRetrofit.request.getTodoPage(pageNumber, model.accessToken)
                 if (response.isSuccessful) {
                     Log.d("response", "get todo page Success: ${response.body()}")
                     return@withContext response.body() ?: emptyList<TodoItemEntity>();
                 } else if (response.code() == 401 && didRetry) {
                     Log.d("response", "Unauthorized (401), trying to refresh token...")
-                    return@withContext refreshHandler(authModel, pageNumber)
+                    return@withContext refreshHandler(model, pageNumber)
                 } else {
                     Log.d("response", "get todo page Error:  ${response.message()}")
                 }
@@ -50,10 +50,9 @@ class TodoRepository(val activity: HomeTaskActivity) {
     ): List<TodoItemEntity> {
         val token = refreshToken(authModel.refreshToken)
         if (token != null) {
-            authModel.accessToken=token
-            updateAuth(authModel)
-            authModel.accessToken = header.BEAR_TOKEN + token
-            return getTodoPage(pageNumber, authModel, false)
+            val model = authModel.copy(accessToken = token)
+            updateAuth(model)
+            return getTodoPage(pageNumber, model, false)
         }
         return emptyList()
     }
@@ -79,16 +78,16 @@ class TodoRepository(val activity: HomeTaskActivity) {
     }
 
     private suspend fun updateAuth(model: AuthResponseModel) {
-         withContext(Dispatchers.IO){
-             try {
-                 RoomDBHelper.getInstance(activity).authDao.upsert(model)
-                 Log.d("response", "update Success")
+        withContext(Dispatchers.IO) {
+            try {
+                RoomDBHelper.getInstance(activity).authDao.upsert(model)
+                Log.d("response", "update Success")
 
-             }catch (e:Exception){
-                 Log.d("response", "updating auth Exception: ${e.localizedMessage}")
+            } catch (e: Exception) {
+                Log.d("response", "updating auth Exception: ${e.localizedMessage}")
 
-             }
-         }
+            }
+        }
     }
 
 }
