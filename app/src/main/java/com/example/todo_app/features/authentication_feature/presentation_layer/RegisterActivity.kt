@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.todo_app.R
@@ -13,6 +14,9 @@ import com.example.todo_app.features.authentication_feature.data_layer.entities.
 import com.example.todo_app.databinding.ActivityRegisterBinding
 import com.example.todo_app.databinding.PasswordInputLayoutBinding
 import com.example.todo_app.databinding.PhoneInputLayoutBinding
+import com.example.todo_app.features.authentication_feature.data_layer.entities.AuthResponseModel
+import com.example.todo_app.features.task_feature.presentation.HomeTaskActivity
+import com.example.todo_app.utils.Constants
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
@@ -137,9 +141,21 @@ class RegisterActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 view.visibility = View.GONE
                 registerBinding.circularProgressBar.visibility = View.VISIBLE
-                authRepo.signUpRequest(signUpRequestBodyEntity)
+                val auth: AuthResponseModel? = authRepo.signUpRequest(signUpRequestBodyEntity)
                 view.visibility = View.VISIBLE
                 registerBinding.circularProgressBar.visibility = View.GONE
+                if (auth != null) {
+                    Toast.makeText(this@RegisterActivity, "Success", Toast.LENGTH_SHORT).show()
+                    startActivity(
+                        Intent(this@RegisterActivity, HomeTaskActivity::class.java)
+                            .putExtra(Constants.NavigationExtras.AUTH, auth)
+                    )
+                    finishAffinity()
+                }
+                else{
+                    Toast.makeText(this@RegisterActivity, "Failed", Toast.LENGTH_SHORT).show()
+
+                }
             }
         }
     }

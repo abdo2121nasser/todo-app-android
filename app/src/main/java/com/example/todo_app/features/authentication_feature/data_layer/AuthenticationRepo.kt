@@ -9,14 +9,15 @@ import com.example.todo_app.utils.helpers.RetrofitHelper
 import com.example.todo_app.utils.helpers.RoomDBHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-typealias retrofit=RetrofitHelper.AuthRetrofit
+
+typealias retrofit = RetrofitHelper.AuthRetrofit
 
 class AuthenticationRepo(private val context: Context) {
 
-    suspend fun signUpRequest(signUpRequestBody: SignUpRequestBodyEntity) {
+    suspend fun signUpRequest(signUpRequestBody: SignUpRequestBodyEntity): AuthResponseModel? {
 
         val request = retrofit.request
-        withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
             try {
                 val response = request.signUp(signUpRequest = signUpRequestBody)
                 if (response.isSuccessful) {
@@ -25,20 +26,23 @@ class AuthenticationRepo(private val context: Context) {
                         RoomDBHelper.getInstance(context).authDao.upsert(auth = it)
                     }
                     Log.d("response", "Success: $result")
+                    return@withContext result
                 } else {
                     Log.d("response", "Error: ${response.errorBody()?.string()}")
                 }
+                null
             } catch (e: Exception) {
                 Log.e("response", "Exception: ${e.localizedMessage}")
+                null
             }
 
         }
 
     }
 
-    suspend fun signInRequest(signInRequestBodyEntity: SignInRequestBodyEntity) {
+    suspend fun signInRequest(signInRequestBodyEntity: SignInRequestBodyEntity): AuthResponseModel? {
         val request = retrofit.request
-        withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
             try {
                 val response = request.signIn(signInRequestBodyEntity = signInRequestBodyEntity)
                 if (response.isSuccessful) {
@@ -49,11 +53,14 @@ class AuthenticationRepo(private val context: Context) {
                             .upsert(auth = it)
                     }
                     Log.d("response", "Success: $result")
+                   return@withContext result
                 } else {
                     Log.d("response", "Error: ${response.errorBody()?.string()}")
                 }
+                null
             } catch (e: Exception) {
                 Log.e("response", "Exception: ${e.localizedMessage}")
+                null
             }
         }
 
