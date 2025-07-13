@@ -8,5 +8,6 @@ data class TodoItemEntity(
     val title:String,
     @SerializedName("desc")
     val subTitle:String,
+    val status:String,
     @SerializedName("createdAt")
     val date:String)

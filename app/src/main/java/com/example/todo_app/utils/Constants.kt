@@ -31,10 +31,11 @@ object Constants {
     }
 
     object UiStrings {
-        const val ALL = "All"
-        const val IN_PROGRESS = "Inpogress"
-        const val WAITING = "Waiting"
-        const val FINISH = "Finished"
+         const val ALL = "All"
+         const val IN_PROGRESS = "Inprogress"
+         const val WAITING = "Waiting"
+         const val FINISH = "Finished"
+         val categories=listOf(ALL, IN_PROGRESS, WAITING, FINISH)
 
 
     }

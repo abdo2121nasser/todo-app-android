@@ -53,7 +53,7 @@
         android:id="@+id/state_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/light_vilote"
+        tools:backgroundTint="@color/light_vilote"
         app:cardCornerRadius="5sp"
         app:layout_constraintEnd_toStartOf="@+id/more_icon"
         app:layout_constraintTop_toTopOf="parent"

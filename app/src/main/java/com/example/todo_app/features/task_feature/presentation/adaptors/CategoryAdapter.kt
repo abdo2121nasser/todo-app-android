@@ -1,8 +1,11 @@
 package com.example.todo_app.features.task_feature.presentation.adaptors
 
 import android.view.ViewGroup
+import androidx.annotation.NonNull
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todo_app.R
 import com.example.todo_app.databinding.CategoryItemBinding
@@ -13,7 +16,7 @@ class CategoryAdapter(
     private val categories: List<String>,
 
     ) : RecyclerView.Adapter<CategoryAdapter.Holder>() {
-    private var selectedIndex: Int = 0
+     var selectedIndex = MutableLiveData<Int>(0)
 
     class Holder(item: CategoryItemBinding) : RecyclerView.ViewHolder(item.root) {
         val textView = item.text
@@ -30,7 +33,7 @@ class CategoryAdapter(
 
     override fun getItemCount(): Int = categories.size
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        val isSelected = position.toInt() == selectedIndex
+        val isSelected = position.toInt() == selectedIndex.value
 
         holder.textView.text = categories[position]
         val bgColor = if (isSelected) R.color.vilote else R.color.light_vilote
@@ -40,10 +43,10 @@ class CategoryAdapter(
         holder.textView.setTextColor(ContextCompat.getColor(activity, textColor))
 
         holder.categoryContainer.setOnClickListener {
-            if (position != selectedIndex) {
-                notifyItemChanged(selectedIndex)//prev index
-                selectedIndex = position.toInt()
-                notifyItemChanged(selectedIndex)//new position
+            if (position != selectedIndex.value) {
+                selectedIndex.value?.let { it1 -> notifyItemChanged(it1) }//prev index
+                selectedIndex.value=position
+                selectedIndex.value?.let { it1 -> notifyItemChanged(it1) }//new position
             }
         }
 

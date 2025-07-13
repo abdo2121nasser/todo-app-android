@@ -10,8 +10,11 @@ import com.example.todo_app.R
 import com.example.todo_app.databinding.TodoItemBinding
 import com.example.todo_app.features.task_feature.data.entities.TodoItemEntity
 import com.example.todo_app.features.task_feature.presentation.HomeTaskActivity
+import com.example.todo_app.utils.Constants
+import com.google.android.material.card.MaterialCardView
 import java.text.SimpleDateFormat
 import java.util.Locale
+typealias ui=Constants.UiStrings
 
 class TodoAdapter(private val activity: HomeTaskActivity, private val todoItems: List<TodoItemEntity>) :
     RecyclerView.Adapter<TodoAdapter.Holder>() {
@@ -21,6 +24,8 @@ class TodoAdapter(private val activity: HomeTaskActivity, private val todoItems:
         val title: TextView = item.title
         val subTitle: TextView = item.subTitle
         val date: TextView = item.date
+        val status:TextView=item.currentState
+        val statusContainer:MaterialCardView=item.stateContainer
 
     }
 
@@ -40,7 +45,9 @@ class TodoAdapter(private val activity: HomeTaskActivity, private val todoItems:
         holder.title.text = todoItems[position].title
         holder.subTitle.text = todoItems[position].subTitle
         holder.date.text = formatDate(todoItems[position].date)
-
+       holder.status.text=todoItems[position].status
+        holder.status.setTextColor(activity.getColor(chooseTextColor(holder.status.text.toString())))
+        holder.statusContainer.setCardBackgroundColor(activity.getColor(chooseContainerColor(holder.status.text.toString())))
         Glide.with(activity)
             .load(todoItems[position].imageLink)
             .placeholder(R.drawable.round_square_place_holder_icon)
@@ -48,6 +55,22 @@ class TodoAdapter(private val activity: HomeTaskActivity, private val todoItems:
             .into(holder.image)
 
 
+    }
+
+
+    private fun  chooseTextColor(status:String):Int{
+      return when(status.lowercase()){
+           ui.IN_PROGRESS .lowercase()-> R.color.vilote
+            ui.WAITING.lowercase()->R.color.orange
+            else ->R.color.blue
+        }
+    }
+    private fun  chooseContainerColor(status:String):Int{
+      return when(status.lowercase()){
+           ui.IN_PROGRESS .lowercase()-> R.color.light_vilote
+            ui.WAITING.lowercase()->R.color.light_orange
+            else ->R.color.light_blue
+        }
     }
 
     private fun formatDate(dateStr: String): String {

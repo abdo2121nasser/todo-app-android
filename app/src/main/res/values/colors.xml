@@ -3,8 +3,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFF</color>
     <color name="blue">#2196F3</color>
+    <color name="light_blue">#E3F2FF</color>
     <color name="grey">#7F7F7F</color>
     <color name="vilote">#5F33E1</color>
     <color name="light_vilote">#F0ECFF</color>
     <color name="red">#F60404</color>
+    <color name="orange">#FF7D53</color>
+    <color name="light_orange">#FFE4F2</color>
 </resources>
