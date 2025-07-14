@@ -1,5 +1,6 @@
 package com.example.todo_app.features.task_feature.presentation.adaptors
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -16,7 +17,7 @@ import com.google.android.material.card.MaterialCardView
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TodoAdapter(private val activity: HomeTaskActivity, private val todoItems: List<TodoItemEntity>) :
+class TodoAdapter(private val activity: Context, private val todoItems: List<TodoItemEntity>) :
     RecyclerView.Adapter<TodoAdapter.Holder>() {
 
     class Holder(item: TodoItemBinding) : RecyclerView.ViewHolder(item.root) {

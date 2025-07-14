@@ -4,79 +4,52 @@ import android.content.Context
 import android.util.Log
 import com.example.todo_app.features.authentication_feature.data_layer.entities.AuthResponseModel
 import com.example.todo_app.features.task_feature.data.entities.TodoItemEntity
-import com.example.todo_app.features.task_feature.presentation.HomeTaskActivity
-import com.example.todo_app.utils.helpers.RoomDBHelper
-import com.example.todo_app.utils.*
 import com.example.todo_app.utils.constants.authRetrofit
-import com.example.todo_app.utils.constants.headers
 import com.example.todo_app.utils.constants.todoRetrofit
+import com.example.todo_app.utils.helpers.RoomDBHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.json.JSONObject
+import okhttp3.ResponseBody
+import retrofit2.Response
 
 
 class TodoRepository(private val context: Context) {
 
     suspend fun getTodoPage(
         pageNumber: Int,
-        authModel: AuthResponseModel,
-        didRetry: Boolean = true
-    ): List<TodoItemEntity> {
+        token: String,
+    ): Response<List<TodoItemEntity>> {
         return withContext(Dispatchers.IO) {
-            try {
-                val model = authModel.copy(accessToken = headers.BEAR_TOKEN + authModel.accessToken)
-                val response = todoRetrofit.request.getTodoPage(pageNumber, model.accessToken)
+                val response = todoRetrofit.request.getTodoPage(pageNumber, token)
                 if (response.isSuccessful) {
                     Log.d("response", "get todo page Success: ${response.body()}")
-                    return@withContext response.body() ?: emptyList<TodoItemEntity>();
-                } else if (response.code() == 401 && didRetry) {
+                    return@withContext response
+                } else if (response.code() == 401
+                    ) {
                     Log.d("response", "Unauthorized (401), trying to refresh token...")
-                    return@withContext refreshHandler(model, pageNumber)
+                    return@withContext response
                 } else {
                     Log.d("response", "get todo page Error:  ${response.message()}")
+                    return@withContext response
                 }
-                emptyList()
-            } catch (e: Exception) {
-                Log.d("response", "get todo page Exception: ${e.localizedMessage}")
-                emptyList()
-            }
-        }
-    }
-
-    private suspend fun refreshHandler(
-        authModel: AuthResponseModel,
-        pageNumber: Int
-    ): List<TodoItemEntity> {
-        val token = refreshToken(authModel.refreshToken)
-        if (token != null) {
-            val model = authModel.copy(accessToken = token)
-            updateAuth(model)
-            return getTodoPage(pageNumber, model, false)
-        }
-        return emptyList()
-    }
+            }}
 
 
-    private suspend fun refreshToken(refreshToken: String): String? {
+
+     suspend fun refreshToken(refreshToken: String): Response<ResponseBody> {
         return withContext(Dispatchers.IO) {
-            try {
                 val response = authRetrofit.request.refreshToken(refreshToken)
-                if (response.isSuccessful) {
-                    val bodyString = response.body()?.string()
-                    val accessToken = JSONObject(bodyString!!).getString("access_token")
-                    Log.d("response", "refresh Success: $accessToken")
-                    return@withContext accessToken
+               if (response.isSuccessful) {
+                    return@withContext  response
                 } else {
                     Log.d("response", "refresh Error: ${response.code()} - ${response.message()}")
+                    return@withContext response
                 }
-            } catch (e: Exception) {
-                Log.d("response", "refresh Exception: ${e.localizedMessage}")
             }
-            null
         }
-    }
 
-    private suspend fun updateAuth(model: AuthResponseModel) {
+
+     suspend fun updateStoredAuth(model: AuthResponseModel) {
         withContext(Dispatchers.IO) {
             try {
                 RoomDBHelper.getInstance(context).authDao.upsert(model)
