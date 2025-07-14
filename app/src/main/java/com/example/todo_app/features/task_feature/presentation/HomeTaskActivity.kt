@@ -14,12 +14,9 @@ import com.example.todo_app.features.task_feature.data.entities.TodoItemEntity
 import com.example.todo_app.features.task_feature.data.repositories.TodoRepository
 import com.example.todo_app.features.task_feature.presentation.adaptors.CategoryAdapter
 import com.example.todo_app.features.task_feature.presentation.adaptors.TodoAdapter
-import com.example.todo_app.utils.Constants
 import com.example.todo_app.utils.helpers.RoomDBHelper
+import com.example.todo_app.utils.*
 import kotlinx.coroutines.launch
-
-typealias ui = Constants.UiStrings
-typealias header = Constants.Api.Headers
 
 
 class HomeTaskActivity : AppCompatActivity() {

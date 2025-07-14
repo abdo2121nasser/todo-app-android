@@ -10,11 +10,10 @@ import com.example.todo_app.R
 import com.example.todo_app.databinding.TodoItemBinding
 import com.example.todo_app.features.task_feature.data.entities.TodoItemEntity
 import com.example.todo_app.features.task_feature.presentation.HomeTaskActivity
-import com.example.todo_app.utils.Constants
+import com.example.todo_app.utils.*
 import com.google.android.material.card.MaterialCardView
 import java.text.SimpleDateFormat
 import java.util.Locale
-typealias ui=Constants.UiStrings
 
 class TodoAdapter(private val activity: HomeTaskActivity, private val todoItems: List<TodoItemEntity>) :
     RecyclerView.Adapter<TodoAdapter.Holder>() {

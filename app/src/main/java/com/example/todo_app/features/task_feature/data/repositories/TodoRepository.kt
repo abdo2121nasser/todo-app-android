@@ -4,19 +4,14 @@ import android.util.Log
 import com.example.todo_app.features.authentication_feature.data_layer.entities.AuthResponseModel
 import com.example.todo_app.features.task_feature.data.entities.TodoItemEntity
 import com.example.todo_app.features.task_feature.presentation.HomeTaskActivity
-import com.example.todo_app.features.task_feature.presentation.header
-import com.example.todo_app.utils.Constants
-import com.example.todo_app.utils.helpers.RetrofitHelper
 import com.example.todo_app.utils.helpers.RoomDBHelper
+import com.example.todo_app.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
-typealias todoRetrofit = RetrofitHelper.TodoRetrofit
-typealias authRetrofit = RetrofitHelper.AuthRetrofit
-typealias header = Constants.Api.Headers
 
-class TodoRepository(val activity: HomeTaskActivity) {
+class TodoRepository(private val activity: HomeTaskActivity) {
 
     suspend fun getTodoPage(
         pageNumber: Int,
@@ -25,7 +20,7 @@ class TodoRepository(val activity: HomeTaskActivity) {
     ): List<TodoItemEntity> {
         return withContext(Dispatchers.IO) {
             try {
-                val model = authModel.copy(accessToken = header.BEAR_TOKEN + authModel.accessToken)
+                val model = authModel.copy(accessToken = headers.BEAR_TOKEN + authModel.accessToken)
                 val response = todoRetrofit.request.getTodoPage(pageNumber, model.accessToken)
                 if (response.isSuccessful) {
                     Log.d("response", "get todo page Success: ${response.body()}")

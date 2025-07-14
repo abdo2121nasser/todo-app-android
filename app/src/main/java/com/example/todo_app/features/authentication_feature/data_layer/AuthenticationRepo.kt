@@ -5,18 +5,17 @@ import android.util.Log
 import com.example.todo_app.features.authentication_feature.data_layer.entities.AuthResponseModel
 import com.example.todo_app.features.authentication_feature.data_layer.entities.SignInRequestBodyEntity
 import com.example.todo_app.features.authentication_feature.data_layer.entities.SignUpRequestBodyEntity
-import com.example.todo_app.utils.helpers.RetrofitHelper
+import com.example.todo_app.utils.*
 import com.example.todo_app.utils.helpers.RoomDBHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-typealias retrofit = RetrofitHelper.AuthRetrofit
 
 class AuthenticationRepo(private val context: Context) {
 
     suspend fun signUpRequest(signUpRequestBody: SignUpRequestBodyEntity): AuthResponseModel? {
 
-        val request = retrofit.request
+        val request = authRetrofit.request
         return withContext(Dispatchers.IO) {
             try {
                 val response = request.signUp(signUpRequest = signUpRequestBody)
@@ -41,7 +40,7 @@ class AuthenticationRepo(private val context: Context) {
     }
 
     suspend fun signInRequest(signInRequestBodyEntity: SignInRequestBodyEntity): AuthResponseModel? {
-        val request = retrofit.request
+        val request = authRetrofit.request
         return withContext(Dispatchers.IO) {
             try {
                 val response = request.signIn(signInRequestBodyEntity = signInRequestBodyEntity)
