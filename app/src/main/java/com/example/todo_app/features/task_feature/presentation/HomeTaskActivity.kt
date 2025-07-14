@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.todo_app.databinding.ActivityHomeTaskBinding
+import com.example.todo_app.features.authentication_feature.data_layer.AuthenticationRepo
 import com.example.todo_app.features.task_feature.data.entities.TodoItemEntity
 import com.example.todo_app.features.task_feature.data.repositories.TodoRepository
 import com.example.todo_app.features.task_feature.presentation.adaptors.CategoryAdapter
@@ -34,7 +35,7 @@ class HomeTaskActivity : AppCompatActivity() {
     private fun initVariables() {
         todoViewModel = ViewModelProvider(
             this,
-            TodoViewModel.provideFactory(application, TodoRepository(this))
+            TodoViewModel.provideFactory(application, TodoRepository(this), AuthenticationRepo(this))
         )[TodoViewModel::class.java]
 //        todoViewModel.fetchAuthModel()
         progressBar = homeBinding.progressBar
@@ -80,9 +81,10 @@ class HomeTaskActivity : AppCompatActivity() {
     private fun fetchTodoItems() {
         progressBar.visibility = View.VISIBLE
         homeBinding.todoRecycleView.visibility = View.GONE
+        lifecycleScope.launch {
             todoViewModel.fetchTodoItems(1)
 
+        }
+
     }
-
-
 }

@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.todo_app.features.authentication_feature.data_layer.AuthenticationRepo
 import com.example.todo_app.features.authentication_feature.data_layer.entities.AuthResponseModel
 import com.example.todo_app.features.task_feature.data.entities.TodoItemEntity
 import com.example.todo_app.features.task_feature.data.repositories.TodoRepository
@@ -24,7 +25,8 @@ import retrofit2.Response
 
 class TodoViewModel(
     private val app: Application,
-    private val todoRepo: TodoRepository
+    private val todoRepo: TodoRepository,
+    private val authRepo:AuthenticationRepo
 ) : AndroidViewModel(app) {
     private val _todoItems = MutableLiveData<List<TodoItemEntity>>(emptyList())
     val todoItems: LiveData<List<TodoItemEntity>> get() = _todoItems
@@ -48,7 +50,7 @@ class TodoViewModel(
                  } else
                      if (response.code() == 401 && didRetry) {
                          getNewAccessToken(model.refreshToken)?.let {
-                             todoRepo.updateStoredAuth(model.copy(accessToken = it))
+                             authRepo.updateStoredAuth(model.copy(accessToken = it))
                              fetchTodoItems(pageNumber,false)
                          }
                      } else{}
@@ -62,7 +64,7 @@ class TodoViewModel(
     private suspend fun getNewAccessToken(refreshToken: String): String? {
         return withContext(Dispatchers.IO) {
             try {
-                val response =todoRepo.refreshToken(refreshToken)
+                val response =authRepo.refreshToken(refreshToken)
                 if (response.isSuccessful) {
                  return@withContext response.body()?.string()
                         ?.let { JSONObject(it).getString("access_token") }
@@ -79,12 +81,13 @@ class TodoViewModel(
     companion object {
         fun provideFactory(
             app: Application,
-            todoRepo: TodoRepository
+            todoRepo: TodoRepository,
+            authRepo:AuthenticationRepo
         ): ViewModelProvider.Factory {
             return object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     if (modelClass.isAssignableFrom(TodoViewModel::class.java)) {
-                        return TodoViewModel(app, todoRepo) as T
+                        return TodoViewModel(app, todoRepo,authRepo) as T
                     }
                     throw IllegalArgumentException("Unknown ViewModel class")
                 }

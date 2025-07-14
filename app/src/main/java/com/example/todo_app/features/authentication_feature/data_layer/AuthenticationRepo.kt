@@ -9,6 +9,8 @@ import com.example.todo_app.utils.constants.authRetrofit
 import com.example.todo_app.utils.helpers.RoomDBHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.ResponseBody
+import retrofit2.Response
 
 
 class AuthenticationRepo(private val context: Context) {
@@ -65,5 +67,29 @@ class AuthenticationRepo(private val context: Context) {
 
     }
 
+    suspend fun refreshToken(refreshToken: String): Response<ResponseBody> {
+        return withContext(Dispatchers.IO) {
+            val response = authRetrofit.request.refreshToken(refreshToken)
+            if (response.isSuccessful) {
+                return@withContext  response
+            } else {
+                Log.d("response", "refresh Error: ${response.code()} - ${response.message()}")
+                return@withContext response
+            }
+        }
+    }
 
+
+    suspend fun updateStoredAuth(model: AuthResponseModel) {
+        withContext(Dispatchers.IO) {
+            try {
+                RoomDBHelper.getInstance(context).authDao.upsert(model)
+                Log.d("response", "update Success")
+
+            } catch (e: Exception) {
+                Log.d("response", "updating auth Exception: ${e.localizedMessage}")
+
+            }
+        }
+    }
 }
