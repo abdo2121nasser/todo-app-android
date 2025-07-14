@@ -23,6 +23,7 @@ class SplashActivity : AppCompatActivity() {
             else {
                 startActivity(Intent(this@SplashActivity, HomeTaskActivity::class.java))
             }
+            finishAffinity()
         }
 
 

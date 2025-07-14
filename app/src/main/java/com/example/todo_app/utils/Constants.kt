@@ -31,7 +31,7 @@ object Constants {
     }
 
     object UiStrings {
-         const val ALL = "All"
+         private const val ALL = "All"
          const val IN_PROGRESS = "Inprogress"
          const val WAITING = "Waiting"
          const val FINISH = "Finished"

@@ -57,7 +57,9 @@ class HomeTaskActivity : AppCompatActivity() {
     private fun initObservers() {
         categoryAdapter.selectedIndex.observe(this) { index ->
             val filteredList: List<TodoItemEntity> = when (index) {
-                1 -> todoItems.value?.filter { it.status == ui.IN_PROGRESS.lowercase() } ?: emptyList()
+                1 -> todoItems.value?.filter { it.status == ui.IN_PROGRESS.lowercase() }
+                    ?: emptyList()
+
                 2 -> todoItems.value?.filter { it.status == ui.WAITING.lowercase() } ?: emptyList()
                 3 -> todoItems.value?.filter { it.status == ui.FINISH.lowercase() } ?: emptyList()
                 else -> todoItems.value ?: emptyList()
@@ -67,9 +69,8 @@ class HomeTaskActivity : AppCompatActivity() {
     }
 
     private fun buildTodoRecycleView(
-        filteredItems: MutableLiveData<List<TodoItemEntity>> = MutableLiveData<List<TodoItemEntity>>(
-            emptyList()
-        )
+        filteredItems: MutableLiveData<List<TodoItemEntity>> =
+            MutableLiveData<List<TodoItemEntity>>(emptyList())
     ) {
         todoItems.observe(this) { items ->
             homeBinding.todoRecycleView.adapter =
