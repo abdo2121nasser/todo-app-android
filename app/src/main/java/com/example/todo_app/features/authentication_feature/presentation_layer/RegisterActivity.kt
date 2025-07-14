@@ -148,7 +148,6 @@ class RegisterActivity : AppCompatActivity() {
                     Toast.makeText(this@RegisterActivity, "Success", Toast.LENGTH_SHORT).show()
                     startActivity(
                         Intent(this@RegisterActivity, HomeTaskActivity::class.java)
-                            .putExtra(Constants.NavigationExtras.AUTH, auth)
                     )
                     finishAffinity()
                 }

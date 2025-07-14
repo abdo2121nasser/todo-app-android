@@ -26,47 +26,57 @@ import retrofit2.Response
 class TodoViewModel(
     private val app: Application,
     private val todoRepo: TodoRepository,
-    private val authRepo:AuthenticationRepo
+    private val authRepo: AuthenticationRepo
 ) : AndroidViewModel(app) {
-    private val _todoItems = MutableLiveData<List<TodoItemEntity>>(emptyList())
-    val todoItems: LiveData<List<TodoItemEntity>> get() = _todoItems
-     var authModel: LiveData<AuthResponseModel> = RoomDBHelper.getInstance(app)
-    .authDao
-    .get()
+     var todoItems: LiveData<List<TodoItemEntity>> = RoomDBHelper.getInstance(app).todoDao.getItems()
 
-     fun fetchTodoItems(
+    var authModel: LiveData<AuthResponseModel> = RoomDBHelper.getInstance(app).authDao.get()
+
+    private var hasFetchedFromApi = false
+
+    fun tryFetchFromApiOnce(pageNumber: Int = 1) {
+        if (hasFetchedFromApi || authModel.value == null) return
+        hasFetchedFromApi = true
+        fetchTodoItems(pageNumber)
+    }
+    private fun readAllItems() = RoomDBHelper.getInstance(app).todoDao.getItems()
+    fun fetchTodoItems(
         pageNumber: Int,
-        didRetry:Boolean=true
-    ){
-        if(authModel.value==null) return;
-         viewModelScope.launch {
-             withContext(Dispatchers.IO) {
-             try {
-                 val model: AuthResponseModel =
-                     authModel.value!!.copy(accessToken = headers.BEAR_TOKEN + authModel.value!!.accessToken)
-                 val response: Response<List<TodoItemEntity>> = todoRepo.getTodoPage(pageNumber, model.accessToken);
-                 if (response.isSuccessful) {
-                     _todoItems.postValue(response.body())
-                 } else
-                     if (response.code() == 401 && didRetry) {
-                         getNewAccessToken(model.refreshToken)?.let {
-                             authRepo.updateStoredAuth(model.copy(accessToken = it))
-                             fetchTodoItems(pageNumber,false)
-                         }
-                     } else{}
-             } catch (e: Exception) {
-                 Log.d("response", "get todo page Exception: ${e.localizedMessage}")
-             }
-         }
-         }
+        didRetry: Boolean = true
+    ) {
+        if (authModel.value == null) return;
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    val model: AuthResponseModel =
+                        authModel.value!!.copy(accessToken = headers.BEAR_TOKEN + authModel.value!!.accessToken)
+                    val response: Response<List<TodoItemEntity>> =
+                        todoRepo.getTodoPage(pageNumber, model.accessToken);
+                    if (response.isSuccessful) {
+                        val items: List<TodoItemEntity> = response.body()!!
+                        todoRepo.upsertItems(items)
+                    } else
+                        if (response.code() == 401 && didRetry) {
+                            getNewAccessToken(model.refreshToken)?.let {
+                                authRepo.updateStoredAuth(model.copy(accessToken = it))
+                                fetchTodoItems(pageNumber, false)
+                            }
+                        } else {
+                          todoItems = readAllItems()
+                        }
+                } catch (e: Exception) {
+                    Log.d("response", "get todo page Exception: ${e.localizedMessage}")
+                }
+            }
+        }
     }
 
     private suspend fun getNewAccessToken(refreshToken: String): String? {
         return withContext(Dispatchers.IO) {
             try {
-                val response =authRepo.refreshToken(refreshToken)
+                val response = authRepo.refreshToken(refreshToken)
                 if (response.isSuccessful) {
-                 return@withContext response.body()?.string()
+                    return@withContext response.body()?.string()
                         ?.let { JSONObject(it).getString("access_token") }
                 }
             } catch (e: Exception) {
@@ -76,18 +86,32 @@ class TodoViewModel(
         }
     }
 
+//    private suspend fun readAllItems(): LiveData<List<TodoItemEntity>> {
+//         viewModelScope.launch {
+//            try {
+//                val items = todoRepo.getAllItems()
+//                Log.d("storage", "get all items Success")
+//                return items
+//            } catch (e: Exception) {
+//                Log.d("storage", "get all items Exception: ${e.localizedMessage}")
+//            }
+//            return MutableLiveData(emptyList())
+//        }
+//
+//
+//    }
 
 
     companion object {
         fun provideFactory(
             app: Application,
             todoRepo: TodoRepository,
-            authRepo:AuthenticationRepo
+            authRepo: AuthenticationRepo
         ): ViewModelProvider.Factory {
             return object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     if (modelClass.isAssignableFrom(TodoViewModel::class.java)) {
-                        return TodoViewModel(app, todoRepo,authRepo) as T
+                        return TodoViewModel(app, todoRepo, authRepo) as T
                     }
                     throw IllegalArgumentException("Unknown ViewModel class")
                 }

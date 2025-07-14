@@ -4,8 +4,9 @@ object Constants {
 
     object RoomDB {
         const val AUTH_ENTITY = "authentication entity"
-        const val TODO_DB = "authentication entity"
+        const val TODO_DB = "data base"
 
+        const val   TODO_ENTITY = "todo item entity"
 
     }
 

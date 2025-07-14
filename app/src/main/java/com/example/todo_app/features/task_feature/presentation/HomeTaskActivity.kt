@@ -1,6 +1,7 @@
 package com.example.todo_app.features.task_feature.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
@@ -49,8 +50,12 @@ class HomeTaskActivity : AppCompatActivity() {
             buildTodoRecycleView(filtered)
         }
         todoViewModel.authModel.observe(this) { model ->
-            if (model != null && todoViewModel.todoItems.value.isNullOrEmpty()) {
-                fetchTodoItems()
+//            if (model != null && todoViewModel.todoItems.value.isNullOrEmpty()) {
+//                Log.d("test","tessst")
+//                fetchTodoItems()
+//            }
+            if (model != null) {
+                todoViewModel.tryFetchFromApiOnce()
             }
         }
         todoViewModel.todoItems.observe(this) {

@@ -95,7 +95,6 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this@LoginActivity, "Success", Toast.LENGTH_SHORT).show()
                     startActivity(
                         Intent(this@LoginActivity, HomeTaskActivity::class.java)
-                            .putExtra(Constants.NavigationExtras.AUTH, auth)
                     )
                     finishAffinity()
                 }

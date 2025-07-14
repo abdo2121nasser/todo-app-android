@@ -6,12 +6,15 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.todo_app.features.authentication_feature.data_layer.entities.AuthResponseModel
 import com.example.todo_app.features.authentication_feature.data_layer.interfaces.AuthDao
+import com.example.todo_app.features.task_feature.data.entities.TodoItemEntity
+import com.example.todo_app.features.task_feature.data.interfaces.TodoDao
 import com.example.todo_app.utils.constants.Constants
 
-@Database(entities = [AuthResponseModel::class], version = 1)
+@Database(entities = [AuthResponseModel::class,TodoItemEntity::class], version = 1)
 abstract class RoomDBHelper : RoomDatabase() {
 
     abstract val authDao: AuthDao
+    abstract val todoDao: TodoDao
 
     companion object {
 

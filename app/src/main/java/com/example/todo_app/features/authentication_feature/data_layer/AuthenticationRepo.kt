@@ -84,10 +84,10 @@ class AuthenticationRepo(private val context: Context) {
         withContext(Dispatchers.IO) {
             try {
                 RoomDBHelper.getInstance(context).authDao.upsert(model)
-                Log.d("response", "update Success")
+                Log.d("storage", "update Success")
 
             } catch (e: Exception) {
-                Log.d("response", "updating auth Exception: ${e.localizedMessage}")
+                Log.d("storage", "updating auth Exception: ${e.localizedMessage}")
 
             }
         }
