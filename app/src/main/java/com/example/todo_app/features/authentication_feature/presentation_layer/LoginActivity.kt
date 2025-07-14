@@ -15,7 +15,7 @@ import com.example.todo_app.databinding.PasswordInputLayoutBinding
 import com.example.todo_app.databinding.PhoneInputLayoutBinding
 import com.example.todo_app.features.authentication_feature.data_layer.entities.AuthResponseModel
 import com.example.todo_app.features.task_feature.presentation.HomeTaskActivity
-import com.example.todo_app.utils.Constants
+import com.example.todo_app.utils.constants.Constants
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
 

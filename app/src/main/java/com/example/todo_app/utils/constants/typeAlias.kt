@@ -1,4 +1,4 @@
-package com.example.todo_app.utils
+package com.example.todo_app.utils.constants
 
 import com.example.todo_app.utils.helpers.RetrofitHelper
 
