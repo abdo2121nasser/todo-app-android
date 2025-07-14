@@ -7,6 +7,7 @@ import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.todo_app.databinding.ActivityHomeTaskBinding
 import com.example.todo_app.features.authentication_feature.data_layer.entities.AuthResponseModel
@@ -14,6 +15,7 @@ import com.example.todo_app.features.task_feature.data.entities.TodoItemEntity
 import com.example.todo_app.features.task_feature.data.repositories.TodoRepository
 import com.example.todo_app.features.task_feature.presentation.adaptors.CategoryAdapter
 import com.example.todo_app.features.task_feature.presentation.adaptors.TodoAdapter
+import com.example.todo_app.features.task_feature.presentation.view_models.TodoViewModel
 import com.example.todo_app.utils.helpers.RoomDBHelper
 import com.example.todo_app.utils.constants.ui
 import kotlinx.coroutines.launch
@@ -27,6 +29,7 @@ class HomeTaskActivity : AppCompatActivity() {
     private val todoItems = MutableLiveData<List<TodoItemEntity>>(emptyList())
     private val authModel: LiveData<AuthResponseModel> =
         RoomDBHelper.getInstance(this).authDao.get()
+    private lateinit var todoViewModel: TodoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +37,8 @@ class HomeTaskActivity : AppCompatActivity() {
         setContentView(homeBinding.root)
         initVariables()
         initObservers()
+
+
     }
 
     override fun onStart() {
@@ -46,39 +51,43 @@ class HomeTaskActivity : AppCompatActivity() {
     }
 
     private fun initVariables() {
+        todoViewModel = ViewModelProvider(
+            this,
+            TodoViewModel.provideFactory(TodoRepository(this))
+        )[TodoViewModel::class.java]
         progressBar = homeBinding.progressBar
         homeBinding.categoryRecycleView.adapter = categoryAdapter
-        buildTodoRecycleView()
+//        buildTodoRecycleView()
     }
 
     private fun initObservers() {
         categoryAdapter.selectedIndex.observe(this) { index ->
-            val filteredList: List<TodoItemEntity> = when (index) {
-                1 -> todoItems.value?.filter { it.status == ui.IN_PROGRESS.lowercase() }
-                    ?: emptyList()
-
-                2 -> todoItems.value?.filter { it.status == ui.WAITING.lowercase() } ?: emptyList()
-                3 -> todoItems.value?.filter { it.status == ui.FINISH.lowercase() } ?: emptyList()
-                else -> todoItems.value ?: emptyList()
-            }
-            buildTodoRecycleView(filteredItems = MutableLiveData(filteredList))
+            val filtered = getFilteredItems(index)
+            buildTodoRecycleView(filtered)
+        }
+        todoItems.observe(this) {
+            buildTodoRecycleView(it)
         }
     }
 
+    private fun getFilteredItems(index: Int?): List<TodoItemEntity> {
+        val allItems = todoItems.value ?: emptyList()
+        val filtered = when (index) {
+            1 -> allItems.filter { it.status.equals(ui.IN_PROGRESS, ignoreCase = true) }
+            2 -> allItems.filter { it.status.equals(ui.WAITING, ignoreCase = true) }
+            3 -> allItems.filter { it.status.equals(ui.FINISH, ignoreCase = true) }
+            else -> allItems
+        }
+        return filtered
+    }
+
     private fun buildTodoRecycleView(
-        filteredItems: MutableLiveData<List<TodoItemEntity>> =
-            MutableLiveData<List<TodoItemEntity>>(emptyList())
+        items: List<TodoItemEntity>
     ) {
-        todoItems.observe(this) { items ->
-            homeBinding.todoRecycleView.adapter =
-                TodoAdapter(
-                    this@HomeTaskActivity,
-                    if (filteredItems.value.isNullOrEmpty())
-                        items else filteredItems.value ?: emptyList()
-                )
+            homeBinding.todoRecycleView.adapter = TodoAdapter(this, items)
             progressBar.visibility = View.GONE
             homeBinding.todoRecycleView.visibility = View.VISIBLE
-        }
+
     }
 
     private fun fetchTodoItems() {

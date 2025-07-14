@@ -1,5 +1,6 @@
 package com.example.todo_app.features.task_feature.data.repositories
 
+import android.content.Context
 import android.util.Log
 import com.example.todo_app.features.authentication_feature.data_layer.entities.AuthResponseModel
 import com.example.todo_app.features.task_feature.data.entities.TodoItemEntity
@@ -14,7 +15,7 @@ import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
 
-class TodoRepository(private val activity: HomeTaskActivity) {
+class TodoRepository(private val context: Context) {
 
     suspend fun getTodoPage(
         pageNumber: Int,
@@ -78,7 +79,7 @@ class TodoRepository(private val activity: HomeTaskActivity) {
     private suspend fun updateAuth(model: AuthResponseModel) {
         withContext(Dispatchers.IO) {
             try {
-                RoomDBHelper.getInstance(activity).authDao.upsert(model)
+                RoomDBHelper.getInstance(context).authDao.upsert(model)
                 Log.d("response", "update Success")
 
             } catch (e: Exception) {
