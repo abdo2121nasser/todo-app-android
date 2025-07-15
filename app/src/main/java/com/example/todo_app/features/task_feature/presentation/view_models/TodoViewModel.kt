@@ -39,6 +39,7 @@ class TodoViewModel(
         hasFetchedFromApi = true
         fetchTodoItems(pageNumber)
     }
+    
     private fun readAllItems() = RoomDBHelper.getInstance(app).todoDao.getItems()
     fun fetchTodoItems(
         pageNumber: Int,
@@ -85,21 +86,6 @@ class TodoViewModel(
             null
         }
     }
-
-//    private suspend fun readAllItems(): LiveData<List<TodoItemEntity>> {
-//         viewModelScope.launch {
-//            try {
-//                val items = todoRepo.getAllItems()
-//                Log.d("storage", "get all items Success")
-//                return items
-//            } catch (e: Exception) {
-//                Log.d("storage", "get all items Exception: ${e.localizedMessage}")
-//            }
-//            return MutableLiveData(emptyList())
-//        }
-//
-//
-//    }
 
 
     companion object {

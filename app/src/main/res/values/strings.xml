@@ -13,6 +13,7 @@
     <string name="address_hint">Your Address</string>
     <string name="experience_level_hint">Experience Level</string>
     <string name="sign_in_here_word">Sign In here</string>
+    <string name="profile">Profile</string>
 
 
 </resources>

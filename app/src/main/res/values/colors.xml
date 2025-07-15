@@ -5,6 +5,8 @@
     <color name="blue">#2196F3</color>
     <color name="light_blue">#E3F2FF</color>
     <color name="grey">#7F7F7F</color>
+    <color name="light_grey">#c2c2c2</color>
+    <color name="profile_text">#2F2F2F</color>
     <color name="vilote">#5F33E1</color>
     <color name="light_vilote">#F0ECFF</color>
     <color name="red">#F60404</color>

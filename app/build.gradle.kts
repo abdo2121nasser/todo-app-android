@@ -60,6 +60,6 @@ dependencies {
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-
+    implementation ("com.google.android.material:material:1.12.0")
 
 }
