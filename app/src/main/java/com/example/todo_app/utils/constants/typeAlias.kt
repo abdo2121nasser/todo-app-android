@@ -11,3 +11,4 @@ typealias room = Constants.RoomDB
 
 typealias todoRetrofit = RetrofitHelper.TodoRetrofit
 typealias authRetrofit = RetrofitHelper.AuthRetrofit
+typealias profileRetrofit = RetrofitHelper.ProfileRetrofit

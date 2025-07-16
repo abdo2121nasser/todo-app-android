@@ -18,6 +18,7 @@ object Constants {
             const val SIGN_IN = "/auth/login"
             const val REFRESH = "/auth/refresh-token"
             const val TODO = "/todos?"
+            const val PROFILE = "/auth/profile"
         }
 
         object Queries {
