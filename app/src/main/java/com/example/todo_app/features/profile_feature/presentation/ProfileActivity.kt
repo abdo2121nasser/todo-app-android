@@ -30,23 +30,33 @@ class ProfileActivity : AppCompatActivity() {
     private fun initVariables() {
         profileViewModel = ViewModelProvider(
             this,
-            ProfileViewModel.provideFactory(application, ProfileRepository())
+            ProfileViewModel.provideFactory(application, ProfileRepository(this))
         )[ProfileViewModel::class.java]
         profileViewModel.authModel =
             intent.getParcelableExtra<AuthResponseModel>(Constants.NavigationExtras.AUTH)
 
 
     }
-      private fun getProfileData(){
+
+
+    private fun getProfileData() {
         lifecycleScope.launch {
-            profileBinding.progressBar.visibility=View.VISIBLE
-            profileBinding.profileRecycleView.visibility=View.GONE
-            profileViewModel.getProfileData()
-            profileBinding.progressBar.visibility=View.GONE
-            profileBinding.profileRecycleView.visibility=View.VISIBLE
-            profileBinding.profileRecycleView.adapter = ProfileAdaptor(profileViewModel.profileItems)
+            profileBinding.progressBar.visibility = View.VISIBLE
+            profileBinding.profileRecycleView.visibility = View.GONE
+            profileViewModel.tryReadProfileData()
+
+            profileViewModel.profileEntity.observe(this@ProfileActivity){
+            if(it != null){
+                profileBinding.progressBar.visibility = View.GONE
+                profileBinding.profileRecycleView.visibility = View.VISIBLE
+                profileBinding.profileRecycleView.adapter =
+                    ProfileAdaptor(profileViewModel.profileItems)
+            }
+
+            }
         }
-       }
+    }
+
     fun returnToHomeScreen(view: View) {
         finish()
     }

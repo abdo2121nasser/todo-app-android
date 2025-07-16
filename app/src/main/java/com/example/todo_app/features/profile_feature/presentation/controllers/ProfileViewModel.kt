@@ -3,6 +3,8 @@ package com.example.todo_app.features.profile_feature.presentation.controllers
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -19,32 +21,44 @@ import kotlinx.coroutines.launch
 class ProfileViewModel(app: Application, val profRepo: ProfileRepository) : AndroidViewModel(app) {
 
     var authModel: AuthResponseModel? = null
-    private lateinit var profileEntity: ProfileEntity
-    val profileItems:List<ProfileItemEntity> get() = listOf(
-        ProfileItemEntity("NAME", profileEntity.name),
-        ProfileItemEntity("PHONE", profileEntity.phone),
-        ProfileItemEntity("LEVEL", profileEntity.level),
-        ProfileItemEntity("YEARS OF EXPERIENCE", profileEntity.experience.toString()),
-        ProfileItemEntity("LOCATION", profileEntity.address),
-    )
+    lateinit var profileEntity: LiveData<ProfileEntity>
+    val profileItems: List<ProfileItemEntity>
+        get() = listOf(
+            ProfileItemEntity("NAME", profileEntity.value!!.name),
+            ProfileItemEntity("PHONE", profileEntity.value!!.phone),
+            ProfileItemEntity("LEVEL", profileEntity.value!!.level),
+            ProfileItemEntity("YEARS OF EXPERIENCE", profileEntity.value!!.experience.toString()),
+            ProfileItemEntity("LOCATION", profileEntity.value!!.address),
+        )
 
-  suspend  fun getProfileData() {
-        if (authModel == null) return;
-        val token: String = headers.BEAR_TOKEN + authModel!!.accessToken
-            try {
-                val response = profRepo.getProfileData(token)
-                if (response.isSuccessful) {
-                    profileEntity = response.body()!!
-//                    todoRepo.upsertItems(items)
-                }
-            } catch (e: Exception) {
-                Log.d("response", "get profile data Exception: ${e.localizedMessage}")
-
-
-
+    suspend fun tryReadProfileData() {
+        var data: ProfileEntity? = profRepo.readProfileData()
+        if (data == null) {
+            getProfileData()
+            data = profRepo.readProfileData()
+        }
+        if (data != null) {
+            profileEntity = MutableLiveData(data)
 
         }
+
     }
+
+
+    suspend fun getProfileData() {
+        if (authModel == null) return;
+        val token: String = headers.BEAR_TOKEN + authModel!!.accessToken;
+        try {
+            val response = profRepo.getProfileData(token)
+            if (response.isSuccessful) {
+                profileEntity = MutableLiveData(response.body()!!)
+                profRepo.storeProfileData(profileEntity.value!!)
+            }
+        } catch (e: Exception) {
+            Log.d("response", "get profile data Exception: ${e.localizedMessage}")
+        }
+    }
+
 
     companion object {
         fun provideFactory(
