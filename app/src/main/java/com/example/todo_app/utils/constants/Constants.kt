@@ -38,6 +38,10 @@ object Constants {
          const val WAITING = "Waiting"
          const val FINISH = "Finished"
          val categories=listOf(ALL, IN_PROGRESS, WAITING, FINISH)
+        private const val LOW = "low"
+        private const val MEDIUM = "medium"
+        private const val HIGH = "high"
+        val priorities=listOf(LOW,MEDIUM,HIGH)
 
 
     }

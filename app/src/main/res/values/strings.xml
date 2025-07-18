@@ -14,6 +14,16 @@
     <string name="experience_level_hint">Experience Level</string>
     <string name="sign_in_here_word">Sign In here</string>
     <string name="profile">Profile</string>
+    <string name="add_task">Add Task</string>
+    <string name="add_img">Add Img</string>
+    <string name="task_title_word">Task title</string>
+    <string name="title_hint">Enter title here…</string>
+    <string name="task_description_word">Task Description</string>
+    <string name="desc_hint">Enter description here...</string>
+    <string name="priority_level_hint">priority level</string>
+    <string name="priority_word">Priority</string>
+    <string name="date_hint">choose due date...</string>
+    <string name="date_word">Date</string>
 
 
 </resources>
