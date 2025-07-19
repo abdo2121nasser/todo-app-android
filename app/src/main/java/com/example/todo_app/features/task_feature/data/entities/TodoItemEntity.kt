@@ -19,5 +19,6 @@ data class TodoItemEntity(
     @SerializedName("desc")
     val subTitle:String,
     val status:String,
+    val priority:String,
     @SerializedName("createdAt")
     val date:String)

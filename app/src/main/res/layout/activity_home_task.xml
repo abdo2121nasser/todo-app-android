@@ -128,6 +128,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:shapeAppearance="@style/Widget.Material3.CircularProgressIndicator"
         app:tint="@color/white"
+        android:onClick="addNewItem"
 
         />
 

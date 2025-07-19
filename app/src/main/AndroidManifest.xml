@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -14,9 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Todo_app"
         tools:targetApi="31">
-<!--        <activity-->
-<!--            android:name=".features.task_feature.presentation.AddTaskActivity"-->
-<!--            android:exported="false" />-->
+        <activity
+            android:name=".features.task_feature.presentation.AddTaskActivity"
+            android:exported="false" />
         <activity
             android:name=".features.profile_feature.presentation.ProfileActivity"
             android:exported="false" />
@@ -30,7 +31,7 @@
             android:name=".features.authentication_feature.presentation_layer.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".features.task_feature.presentation.AddTaskActivity"
+            android:name=".features.splash_feature.presentation.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

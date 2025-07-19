@@ -2,7 +2,6 @@ package com.example.todo_app.features.task_feature.presentation
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +16,7 @@ import com.example.todo_app.features.task_feature.presentation.adaptors.Category
 import com.example.todo_app.features.task_feature.presentation.adaptors.TodoAdapter
 import com.example.todo_app.features.task_feature.presentation.view_models.TodoViewModel
 import com.example.todo_app.utils.constants.Constants
+import com.example.todo_app.utils.constants.nav
 import com.example.todo_app.utils.constants.ui
 import kotlinx.coroutines.launch
 
@@ -57,10 +57,6 @@ class HomeTaskActivity : AppCompatActivity() {
             buildTodoRecycleView(filtered)
         }
         todoViewModel.authModel.observe(this) { model ->
-//            if (model != null && todoViewModel.todoItems.value.isNullOrEmpty()) {
-//                Log.d("test","tessst")
-//                fetchTodoItems()
-//            }
             if (model != null) {
                 todoViewModel.tryFetchFromApiOnce()
             }
@@ -68,6 +64,8 @@ class HomeTaskActivity : AppCompatActivity() {
         todoViewModel.todoItems.observe(this) {
             buildTodoRecycleView(it)
         }
+
+
     }
 
     private fun getFilteredItems(index: Int?): List<TodoItemEntity> {
@@ -90,21 +88,26 @@ class HomeTaskActivity : AppCompatActivity() {
 
     }
 
-    private fun fetchTodoItems() {
-        progressBar.visibility = View.VISIBLE
-        homeBinding.todoRecycleView.visibility = View.GONE
-        lifecycleScope.launch {
-            todoViewModel.fetchTodoItems(1)
-
-        }
-
-    }
-
+//    private fun fetchTodoItems() {
+//        progressBar.visibility = View.VISIBLE
+//        homeBinding.todoRecycleView.visibility = View.GONE
+//        lifecycleScope.launch {
+//            todoViewModel.fetchTodoItems(1)
+//
+//        }
+//
+//    }
     fun goToProfileScreen(view: View) {
         startActivity(
             Intent(this, ProfileActivity::class.java)
                 .putExtra(Constants.NavigationExtras.AUTH, todoViewModel.authModel.value)
 
+        )
+    }
+    fun addNewItem(view: View) {
+        startActivity(
+            Intent(this, AddTaskActivity::class.java)
+                .putExtra(nav.AUTH, todoViewModel.authModel.value)
         )
     }
 }

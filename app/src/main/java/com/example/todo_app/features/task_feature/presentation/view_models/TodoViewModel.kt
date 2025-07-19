@@ -41,7 +41,7 @@ class TodoViewModel(
     }
     
     private fun readAllItems() = RoomDBHelper.getInstance(app).todoDao.getItems()
-    fun fetchTodoItems(
+    private fun fetchTodoItems(
         pageNumber: Int,
         didRetry: Boolean = true
     ) {

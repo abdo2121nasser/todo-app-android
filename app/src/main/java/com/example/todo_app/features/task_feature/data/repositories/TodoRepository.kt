@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.todo_app.features.authentication_feature.data_layer.entities.AuthResponseModel
+import com.example.todo_app.features.task_feature.data.entities.CreateTodoItemRequestEntity
 import com.example.todo_app.features.task_feature.data.entities.TodoItemEntity
 import com.example.todo_app.utils.constants.authRetrofit
 import com.example.todo_app.utils.constants.todoRetrofit
@@ -36,6 +37,22 @@ class TodoRepository(private val context: Context) {
         }
     }
 
+   suspend fun createTodoItem(todoItemEntity: CreateTodoItemRequestEntity, token: String,): Response<TodoItemEntity>{
+     return  withContext(Dispatchers.IO){
+         val response = todoRetrofit.request.createTodoItem(todoItemEntity, token)
+         if (response.isSuccessful) {
+             Log.d("response", "get todo page Success: ${response.body()}")
+             return@withContext response
+         } else if (response.code() == 401
+         ) {
+             Log.d("response", "Unauthorized (401), trying to refresh token...")
+             return@withContext response
+         } else {
+             Log.d("response", "create todo item Error:  ${response.message()}")
+             return@withContext response
+         }
+     }
+    }
     suspend fun upsertItems(items: List<TodoItemEntity>) {
         withContext(Dispatchers.IO) {
             try {
