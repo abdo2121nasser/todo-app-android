@@ -43,16 +43,7 @@ class AddTaskViewModel(app: Application, private val todoRepo: TodoRepository) :
         }
 
     }
-    fun getRealPathFromURI(context: Context, uri: Uri): String? {
-        val projection = arrayOf(android.provider.MediaStore.Images.Media.DATA)
-        context.contentResolver.query(uri, projection, null, null, null)?.use { cursor ->
-            val columnIndex = cursor.getColumnIndexOrThrow(android.provider.MediaStore.Images.Media.DATA)
-            if (cursor.moveToFirst()) {
-                return cursor.getString(columnIndex)
-            }
-        }
-        return null
-    }
+
 
     companion object {
         fun provideFactory(app: Application,todoRepo: TodoRepository): ViewModelProvider.Factory {

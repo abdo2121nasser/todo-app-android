@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.example.todo_app.features.authentication_feature.data_layer.AuthenticationRepo
 import com.example.todo_app.features.authentication_feature.data_layer.entities.AuthResponseModel
@@ -28,7 +29,11 @@ class TodoViewModel(
     private val todoRepo: TodoRepository,
     private val authRepo: AuthenticationRepo
 ) : AndroidViewModel(app) {
-     var todoItems: LiveData<List<TodoItemEntity>> = RoomDBHelper.getInstance(app).todoDao.getItems()
+     var todoItems: LiveData<List<TodoItemEntity>> = RoomDBHelper.getInstance(app).todoDao.getItems().map {item->
+         item.sortedBy {
+             it.title
+         }
+     }
 
     var authModel: LiveData<AuthResponseModel> = RoomDBHelper.getInstance(app).authDao.get()
 
