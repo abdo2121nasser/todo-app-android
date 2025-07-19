@@ -1,11 +1,15 @@
 package com.example.todo_app.features.task_feature.data.entities
 
+import android.os.Parcelable
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.todo_app.utils.constants.room
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 @Entity(tableName = room.TODO_ENTITY)
 data class TodoItemEntity(
     @PrimaryKey
@@ -22,3 +26,4 @@ data class TodoItemEntity(
     val priority:String,
     @SerializedName("createdAt")
     val date:String)
+    : Parcelable

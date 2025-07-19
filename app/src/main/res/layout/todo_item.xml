@@ -32,7 +32,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/state_container"
         app:tint="@color/vilote"
-        android:onClick="showMoreOptions"
         />
 
 

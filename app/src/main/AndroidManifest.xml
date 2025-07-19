@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+
 
     <application
         android:allowBackup="true"
@@ -16,7 +17,7 @@
         android:theme="@style/Theme.Todo_app"
         tools:targetApi="31">
         <activity
-            android:name=".features.task_feature.presentation.AddTaskActivity"
+            android:name=".features.task_feature.presentation.TaskActionActivity"
             android:exported="false" />
         <activity
             android:name=".features.profile_feature.presentation.ProfileActivity"

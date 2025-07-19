@@ -7,7 +7,6 @@ import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.example.todo_app.R
 import com.example.todo_app.databinding.ActivityHomeTaskBinding
 import com.example.todo_app.features.authentication_feature.data_layer.AuthenticationRepo
@@ -18,9 +17,9 @@ import com.example.todo_app.features.task_feature.presentation.adaptors.Category
 import com.example.todo_app.features.task_feature.presentation.adaptors.TodoAdapter
 import com.example.todo_app.features.task_feature.presentation.view_models.TodoViewModel
 import com.example.todo_app.utils.constants.Constants
+import com.example.todo_app.utils.constants.headers
 import com.example.todo_app.utils.constants.nav
 import com.example.todo_app.utils.constants.ui
-import kotlinx.coroutines.launch
 
 
 class HomeTaskActivity : AppCompatActivity() {
@@ -84,7 +83,7 @@ class HomeTaskActivity : AppCompatActivity() {
     private fun buildTodoRecycleView(
         items: List<TodoItemEntity>
     ) {
-        homeBinding.todoRecycleView.adapter = TodoAdapter(this, items)
+        homeBinding.todoRecycleView.adapter = TodoAdapter(this, items,::showMoreOptions)
         progressBar.visibility = View.GONE
         homeBinding.todoRecycleView.visibility = View.VISIBLE
 
@@ -108,27 +107,32 @@ class HomeTaskActivity : AppCompatActivity() {
     }
     fun addNewItem(view: View) {
         startActivity(
-            Intent(this, AddTaskActivity::class.java)
+            Intent(this, TaskActionActivity::class.java)
                 .putExtra(nav.AUTH, todoViewModel.authModel.value)
         )
     }
 
-    fun showMoreOptions(view: View) {
-        val popupMenu = PopupMenu(this, view)
+    private fun showMoreOptions(it: View,todoItemEntity:TodoItemEntity) {
+        val popupMenu = PopupMenu(this, it)
         popupMenu.menuInflater.inflate(R.menu.todo_options_menu, popupMenu.menu)
-
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.edit -> {
-
+                    startActivity(
+                        Intent(this, TaskActionActivity::class.java)
+                            .putExtra(nav.AUTH,todoViewModel.authModel.value)
+                            .putExtra(nav.UPDATE_TODO_ENTITY,todoItemEntity)
+                    )
                     true
                 }
                 R.id.delete -> {
                     true
                 }
+
                 else -> false
             }
         }
         popupMenu.show()
     }
+
 }

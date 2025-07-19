@@ -48,6 +48,7 @@ object Constants {
     }
   object NavigationExtras {
         const val AUTH = "auth model extra"
+        const val UPDATE_TODO_ENTITY = "update todo entity"
 
 
 
