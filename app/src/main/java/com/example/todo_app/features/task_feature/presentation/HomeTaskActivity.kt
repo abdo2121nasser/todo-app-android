@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.todo_app.R
 import com.example.todo_app.databinding.ActivityHomeTaskBinding
 import com.example.todo_app.features.authentication_feature.data_layer.AuthenticationRepo
 import com.example.todo_app.features.profile_feature.presentation.ProfileActivity
@@ -109,5 +111,24 @@ class HomeTaskActivity : AppCompatActivity() {
             Intent(this, AddTaskActivity::class.java)
                 .putExtra(nav.AUTH, todoViewModel.authModel.value)
         )
+    }
+
+    fun showMoreOptions(view: View) {
+        val popupMenu = PopupMenu(this, view)
+        popupMenu.menuInflater.inflate(R.menu.todo_options_menu, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.edit -> {
+
+                    true
+                }
+                R.id.delete -> {
+                    true
+                }
+                else -> false
+            }
+        }
+        popupMenu.show()
     }
 }
