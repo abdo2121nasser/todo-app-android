@@ -50,6 +50,28 @@ class TaskActionActivity : AppCompatActivity() {
                 TaskViewModel.provideFactory(application, TodoRepository(this))
             )[TaskViewModel::class.java]
         receiveVariables()
+        updatedItemEntitySetups()
+        taskViewModel.selectedDate?.let {
+            taskBinding.dateInput.setText(it)
+        }
+        taskViewModel.selectedImage?.let {
+            Glide.with(this)
+                .load(Uri.parse(it))
+                .placeholder(R.drawable.round_square_place_holder_icon)
+                .error(R.drawable.error_icon)
+                .into(taskBinding.selectedImage)
+        }
+
+        taskViewModel.selectedPriority?.let {
+            taskBinding.priorityDropdownMenu.setText(it, false)
+        }
+        setPriorities()
+        taskBinding.datePickerContainer.setEndIconOnClickListener {
+            pickDate()
+        }
+    }
+
+    private fun updatedItemEntitySetups() {
         updateItemEntity?.let {
             taskBinding.title.text = "Edit Task"
             taskBinding.actionButton.text = "Edit"
@@ -74,26 +96,8 @@ class TaskActionActivity : AppCompatActivity() {
             taskViewModel.selectedStatus = it.status
 
         }
-
-        taskViewModel.selectedDate?.let {
-            taskBinding.dateInput.setText(it)
-        }
-        taskViewModel.selectedImage?.let {
-            Glide.with(this)
-                .load(Uri.parse(it))
-                .placeholder(R.drawable.round_square_place_holder_icon)
-                .error(R.drawable.error_icon)
-                .into(taskBinding.selectedImage)
-        }
-
-        taskViewModel.selectedPriority?.let {
-            taskBinding.priorityDropdownMenu.setText(it, false)
-        }
-        setPriorities()
-        taskBinding.datePickerContainer.setEndIconOnClickListener {
-            pickDate()
-        }
     }
+
     private  fun receiveVariables(){
         authModel = intent.getParcelableExtra(nav.AUTH)!!
         updateItemEntity = intent.getParcelableExtra(nav.UPDATE_TODO_ENTITY)
@@ -114,7 +118,7 @@ class TaskActionActivity : AppCompatActivity() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, ui.priorities)
         taskBinding.priorityDropdownMenu.setAdapter(adapter)
         taskBinding.priorityDropdownMenu.setOnItemClickListener { _, _, position, _ ->
-            val selected = ui.statuses[position]
+            val selected = ui.priorities[position]
             taskViewModel.selectedPriority = selected
         }
     }
@@ -188,8 +192,6 @@ class TaskActionActivity : AppCompatActivity() {
         } else {
             taskBinding.datePickerContainer.helperText = null
         }
-
-
         if (taskViewModel.selectedImage == null) {
             Toast.makeText(this, "Please select an image", Toast.LENGTH_SHORT).show()
             isValid = false

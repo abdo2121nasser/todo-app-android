@@ -1,11 +1,9 @@
 package com.example.todo_app.features.task_feature.presentation.view_models
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.map
@@ -14,9 +12,7 @@ import com.example.todo_app.features.authentication_feature.data_layer.Authentic
 import com.example.todo_app.features.authentication_feature.data_layer.entities.AuthResponseModel
 import com.example.todo_app.features.task_feature.data.entities.TodoItemEntity
 import com.example.todo_app.features.task_feature.data.repositories.TodoRepository
-import com.example.todo_app.features.task_feature.presentation.adaptors.CategoryAdapter
 import com.example.todo_app.utils.constants.headers
-import com.example.todo_app.utils.constants.ui
 import com.example.todo_app.utils.helpers.RoomDBHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,11 +25,12 @@ class TodoViewModel(
     private val todoRepo: TodoRepository,
     private val authRepo: AuthenticationRepo
 ) : AndroidViewModel(app) {
-     var todoItems: LiveData<List<TodoItemEntity>> = RoomDBHelper.getInstance(app).todoDao.getItems().map {item->
-         item.sortedBy {
-             it.title
-         }
-     }
+     var todoItems: LiveData<List<TodoItemEntity>> = RoomDBHelper.getInstance(app).todoDao.getItems()
+//    .map {item->
+//         item.sortedBy {
+//             it.title
+//         }
+//     }
 
     var authModel: LiveData<AuthResponseModel> = RoomDBHelper.getInstance(app).authDao.get()
 
@@ -68,13 +65,32 @@ class TodoViewModel(
                                 fetchTodoItems(pageNumber, false)
                             }
                         } else {
-                          todoItems = readAllItems()
+                            todoItems = readAllItems()
                         }
                 } catch (e: Exception) {
                     Log.d("response", "get todo page Exception: ${e.localizedMessage}")
                 }
             }
         }
+    }
+
+    suspend fun deleteTodoItem(itemId: String, ) {
+        withContext(Dispatchers.IO) {
+            val accessToken = headers.BEAR_TOKEN + authModel.value?.accessToken
+            try {
+                val response = todoRepo.deleteTodoItem(itemId, accessToken)
+                if (response.isSuccessful) {
+                    RoomDBHelper.getInstance(app).todoDao.delete(response.body()!!)
+                } else {
+                    Log.e("response", "something wrong happen")
+                }
+            } catch (e: Exception) {
+                Log.e("response", "create todo item Exception: ${e.localizedMessage}")
+
+            }
+
+        }
+
     }
 
     private suspend fun getNewAccessToken(refreshToken: String): String? {

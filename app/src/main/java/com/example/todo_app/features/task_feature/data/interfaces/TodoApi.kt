@@ -38,6 +38,12 @@ interface TodoApi {
         @Header(headers.AUTH) token: String
     ): Response<TodoItemEntity>
 
+    @PUT(endPoint.DELETE_TODO_ITEM )
+    suspend fun deleteTodoItem(
+        @Path("id") itemId : String,
+        @Header(headers.AUTH) token: String
+    ): Response<TodoItemEntity>
+
 
 
 }

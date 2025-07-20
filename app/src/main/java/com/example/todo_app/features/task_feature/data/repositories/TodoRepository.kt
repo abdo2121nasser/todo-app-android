@@ -67,6 +67,22 @@ class TodoRepository(private val context: Context) {
             }
         }
     }
+    suspend fun deleteTodoItem(itemId:String,token: String):Response<TodoItemEntity>{
+        return  withContext(Dispatchers.IO){
+            val response = todoRetrofit.request.deleteTodoItem(itemId = itemId,token)
+            if (response.isSuccessful) {
+                Log.d("response", "delete todo item Success: ${response.body()}")
+                return@withContext response
+            } else if (response.code() == 401
+            ) {
+                Log.e("response", "Unauthorized (401), trying to refresh token...")
+                return@withContext response
+            } else {
+                Log.e("response", "delete todo item Error:  ${response.message()}")
+                return@withContext response
+            }
+        }
+    }
 
 
     suspend fun upsertItems(items: List<TodoItemEntity>) {

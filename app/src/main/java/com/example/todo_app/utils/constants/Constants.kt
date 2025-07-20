@@ -21,6 +21,7 @@ object Constants {
             const val CREATE_TODO_ITEM = "/todos"
             const val PROFILE = "/auth/profile"
             const val UPDATE_TODO_ITEM = "/todos/{id}"
+            const val DELETE_TODO_ITEM = "/todos/{id}"
         }
 
         object Queries {
