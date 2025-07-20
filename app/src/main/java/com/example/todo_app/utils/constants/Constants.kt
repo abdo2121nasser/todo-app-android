@@ -20,6 +20,7 @@ object Constants {
             const val TODO = "/todos?"
             const val CREATE_TODO_ITEM = "/todos"
             const val PROFILE = "/auth/profile"
+            const val UPDATE_TODO_ITEM = "/todos/{id}"
         }
 
         object Queries {
@@ -39,10 +40,12 @@ object Constants {
          const val WAITING = "Waiting"
          const val FINISH = "Finished"
          val categories=listOf(ALL, IN_PROGRESS, WAITING, FINISH)
+        val statuses=listOf( IN_PROGRESS, WAITING, FINISH)
         private const val LOW = "low"
         private const val MEDIUM = "medium"
         private const val HIGH = "high"
         val priorities=listOf(LOW,MEDIUM,HIGH)
+
 
 
     }

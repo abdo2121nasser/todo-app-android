@@ -2,7 +2,6 @@ package com.example.todo_app.features.task_feature.presentation
 
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -21,6 +20,7 @@ import com.example.todo_app.databinding.ActivityTaskActionBinding
 import com.example.todo_app.features.authentication_feature.data_layer.entities.AuthResponseModel
 import com.example.todo_app.features.task_feature.data.entities.CreateTodoItemRequestEntity
 import com.example.todo_app.features.task_feature.data.entities.TodoItemEntity
+import com.example.todo_app.features.task_feature.data.entities.UpdateTodoItemRequestModel
 import com.example.todo_app.features.task_feature.data.repositories.TodoRepository
 import com.example.todo_app.features.task_feature.presentation.adaptors.formatDate
 import com.example.todo_app.features.task_feature.presentation.view_models.TaskViewModel
@@ -51,6 +51,14 @@ class TaskActionActivity : AppCompatActivity() {
             )[TaskViewModel::class.java]
         receiveVariables()
         updateItemEntity?.let {
+            taskBinding.title.text = "Edit Task"
+            taskBinding.actionButton.text = "Edit"
+            taskBinding.statusContainer.visibility = View.VISIBLE
+            taskBinding.statusTitle.visibility = View.VISIBLE
+            taskBinding.datePickerContainer.visibility = View.GONE
+            taskBinding.dateTitle.visibility = View.GONE
+            taskBinding.statusDropdownMenu.setText(it.status)
+            setStatus()
             taskBinding.myTaskTitle.setText(it.title)
             taskBinding.myTaskDesc.setText(it.subTitle)
             taskBinding.priorityDropdownMenu.setText(it.priority)
@@ -63,6 +71,7 @@ class TaskActionActivity : AppCompatActivity() {
             taskViewModel.selectedDate = it.date.formatDate()
             taskViewModel.selectedImage = it.imageLink
             taskViewModel.selectedPriority = it.priority
+            taskViewModel.selectedStatus = it.status
 
         }
 
@@ -105,8 +114,17 @@ class TaskActionActivity : AppCompatActivity() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, ui.priorities)
         taskBinding.priorityDropdownMenu.setAdapter(adapter)
         taskBinding.priorityDropdownMenu.setOnItemClickListener { _, _, position, _ ->
-            val selected = ui.priorities[position]
+            val selected = ui.statuses[position]
             taskViewModel.selectedPriority = selected
+        }
+    }
+
+    private fun setStatus() {
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, ui.statuses)
+        taskBinding.statusDropdownMenu.setAdapter(adapter)
+        taskBinding.statusDropdownMenu.setOnItemClickListener { _, _, position, _ ->
+            val selected = ui.statuses[position]
+            taskViewModel.selectedStatus = selected
         }
     }
 
@@ -128,22 +146,6 @@ class TaskActionActivity : AppCompatActivity() {
     }
 
     fun returnToHomeScreen(view: View) = finish()
-
-    fun createTodoItem(view: View) {
-        if (validate()) {
-            lifecycleScope.launch {
-                taskBinding.addButton.visibility = View.GONE
-                taskBinding.circularProgressBar.visibility = View.VISIBLE
-
-                taskViewModel.createTodoItem(
-                    getTodoItem(),
-                    authModel.accessToken
-                )
-                finish()
-            }
-        }
-
-    }
 
     private fun validate(): Boolean {
         var isValid = true
@@ -196,11 +198,43 @@ class TaskActionActivity : AppCompatActivity() {
         return isValid
     }
 
-    private fun getTodoItem() = CreateTodoItemRequestEntity(
+    private fun getCreateTodoItem() = CreateTodoItemRequestEntity(
         taskViewModel.selectedImage.toString(),
         taskBinding.myTaskTitle.text.toString(),
         taskBinding.myTaskDesc.text.toString(),
         taskViewModel.selectedPriority!!,
         taskViewModel.selectedDate!!
     )
+
+    private fun getUpdateTodoItem() = UpdateTodoItemRequestModel(
+        userId = authModel.id,
+        imageLink = taskViewModel.selectedImage.toString(),
+        title = taskBinding.myTaskTitle.text.toString(),
+        subTitle = taskBinding.myTaskDesc.text.toString(),
+        priority = taskViewModel.selectedPriority!!,
+        status = taskViewModel.selectedStatus!!
+    )
+
+    fun doTaskAction(view: View) {
+        if (validate()) {
+            taskBinding.actionButton.visibility = View.GONE
+            taskBinding.circularProgressBar.visibility = View.VISIBLE
+            lifecycleScope.launch {
+                if (updateItemEntity == null) {
+                    taskViewModel.createTodoItem(
+                        getCreateTodoItem(),
+                        authModel.accessToken
+                    )
+                } else {
+                    taskViewModel.updateTodoItem(
+                        getUpdateTodoItem(),
+                        updateItemEntity!!.id,
+                        authModel.accessToken
+                    )
+                }
+                finish()
+            }
+
+        }
+    }
 }

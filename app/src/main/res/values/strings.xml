@@ -24,6 +24,7 @@
     <string name="priority_word">Priority</string>
     <string name="date_hint">choose due date...</string>
     <string name="date_word">Date</string>
+    <string name="status_word">Status</string>
 
 
 </resources>

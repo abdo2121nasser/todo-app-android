@@ -30,6 +30,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -64,15 +65,6 @@
                 android:adjustViewBounds="true"
                 android:src="@drawable/add_photo_icon" />
 
-<!--            <TextView-->
-<!--                android:id="@+id/add_text"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="8dp"-->
-<!--                android:text="@string/add_img"-->
-<!--                android:textColor="@color/vilote"-->
-<!--                android:textSize="20sp"-->
-<!--                android:textStyle="bold" />-->
         </LinearLayout>
 
         <TextView
@@ -147,7 +139,6 @@
             android:hint="@string/priority_level_hint"
             android:textColorHint="@color/vilote"
             app:boxBackgroundColor="@color/light_vilote"
-
             app:boxCornerRadiusBottomEnd="10sp"
             app:boxCornerRadiusBottomStart="10sp"
             app:boxCornerRadiusTopEnd="10sp"
@@ -171,7 +162,51 @@
                 android:textColor="@color/vilote"
                 android:textStyle="bold" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <TextView
+            android:id="@+id/status_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5sp"
+            android:text="@string/status_word"
+            android:textColor="@color/grey"
+            android:textSize="16sp"
+            android:visibility="gone"
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/status_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:hint="hint"
+            android:textColorHint="@color/vilote"
+            app:boxBackgroundColor="@color/light_vilote"
+            app:boxCornerRadiusBottomEnd="10sp"
+            app:boxCornerRadiusBottomStart="10sp"
+            app:boxCornerRadiusTopEnd="10sp"
+            app:boxCornerRadiusTopStart="10sp"
+            app:endIconMode="dropdown_menu"
+            app:endIconTint="@color/vilote"
+            app:startIconTint="@color/vilote"
+            android:visibility="gone"
+
+            >
+
+            <AutoCompleteTextView
+                android:id="@+id/status_dropdown_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:dropDownHeight="wrap_content"
+                android:importantForAutofill="no"
+                android:inputType="none"
+                android:paddingHorizontal="40sp"
+                android:paddingVertical="15sp"
+                android:textColor="@color/vilote"
+                android:textStyle="bold" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/date_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="10sp"
@@ -208,7 +243,7 @@
 
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/add_button"
+            android:id="@+id/action_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
                android:text="@string/add_task"
@@ -216,7 +251,7 @@
             app:backgroundTint="@color/vilote"
             android:paddingVertical="15sp"
             app:cornerRadius="10sp"
-            android:onClick="createTodoItem"
+            android:onClick="doTaskAction"
             />
         <ProgressBar
             android:id="@+id/circularProgressBar"

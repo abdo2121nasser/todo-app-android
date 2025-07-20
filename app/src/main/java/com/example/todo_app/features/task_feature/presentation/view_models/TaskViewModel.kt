@@ -1,12 +1,14 @@
 package com.example.todo_app.features.task_feature.presentation.view_models
 
 import android.app.Application
-import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.todo_app.features.authentication_feature.data_layer.entities.AuthResponseModel
 import com.example.todo_app.features.task_feature.data.entities.CreateTodoItemRequestEntity
+import com.example.todo_app.features.task_feature.data.entities.TodoItemEntity
+import com.example.todo_app.features.task_feature.data.entities.UpdateTodoItemRequestModel
 import com.example.todo_app.features.task_feature.data.repositories.TodoRepository
 import com.example.todo_app.utils.constants.headers
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +19,7 @@ class TaskViewModel(app: Application, private val todoRepo: TodoRepository) : An
     var selectedDate: String? = null
     var selectedImage: String? = null
     var selectedPriority: String? = null
+    var selectedStatus: String? = null
 
 
     suspend fun createTodoItem(todoItemEntity: CreateTodoItemRequestEntity, token: String){
@@ -32,6 +35,26 @@ class TaskViewModel(app: Application, private val todoRepo: TodoRepository) : An
                 }
             }catch (e:Exception){
                 Log.d("response", "create todo item Exception: ${e.localizedMessage}")
+
+            }
+
+        }
+
+    }
+
+    suspend fun updateTodoItem(item: UpdateTodoItemRequestModel, itemId:String, token:String){
+        withContext(Dispatchers.IO){
+             val accessToken = headers.BEAR_TOKEN+ token
+            try {
+                val response=  todoRepo.updateTodoItem(item,itemId,accessToken)
+                if (response.isSuccessful) {
+                    todoRepo.upsertItems(listOf( response.body()!!))
+                }
+                else{
+                    Log.e("response", "something wrong happen")
+                }
+            }catch (e:Exception){
+                Log.e("response", "create todo item Exception: ${e.localizedMessage}")
 
             }
 
