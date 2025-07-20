@@ -88,7 +88,7 @@ class HomeTaskActivity : AppCompatActivity() {
     private fun buildTodoRecycleView(
         items: List<TodoItemEntity>
     ) {
-        homeBinding.todoRecycleView.adapter = TodoAdapter(this, items,::showMoreOptions)
+        homeBinding.todoRecycleView.adapter = TodoAdapter(this, items,::showMoreOptions,::onTodoItemClick)
         progressBar.visibility = View.GONE
         homeBinding.todoRecycleView.visibility = View.VISIBLE
 
@@ -141,6 +141,11 @@ class HomeTaskActivity : AppCompatActivity() {
             }
         }
         popupMenu.show()
+    }
+    private fun onTodoItemClick(item:TodoItemEntity){
+        startActivity(Intent(this,TaskDetailsActivity::class.java)
+            .putExtra(nav.DETAILED_TODO_ENTITY,item)
+        )
     }
 
 }

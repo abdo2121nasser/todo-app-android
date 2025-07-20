@@ -42,9 +42,9 @@ object Constants {
          const val FINISH = "Finished"
          val categories=listOf(ALL, IN_PROGRESS, WAITING, FINISH)
         val statuses=listOf( IN_PROGRESS, WAITING, FINISH)
-        private const val LOW = "low"
-        private const val MEDIUM = "medium"
-        private const val HIGH = "high"
+         const val LOW = "low"
+         const val MEDIUM = "medium"
+         const val HIGH = "high"
         val priorities=listOf(LOW,MEDIUM,HIGH)
 
 
@@ -53,6 +53,7 @@ object Constants {
   object NavigationExtras {
         const val AUTH = "auth model extra"
         const val UPDATE_TODO_ENTITY = "update todo entity"
+        const val DETAILED_TODO_ENTITY = "detailed todo entity"
 
 
 

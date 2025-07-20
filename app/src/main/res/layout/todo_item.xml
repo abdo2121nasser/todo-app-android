@@ -88,7 +88,9 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@id/more_icon"
         app:layout_constraintStart_toStartOf="@id/title"
-        app:layout_constraintTop_toBottomOf="@id/title" />
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintBottom_toTopOf="@id/priority_text"
+        />
 
 
     <com.google.android.material.textview.MaterialTextView
@@ -103,6 +105,22 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/more_icon" />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/priority_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5sp"
+        tools:drawableStart="@drawable/flage_icon"
+        tools:text="Waiting"
+        android:textColor="@color/vilote"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/todo_item"
+        app:layout_constraintStart_toStartOf="@id/title"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

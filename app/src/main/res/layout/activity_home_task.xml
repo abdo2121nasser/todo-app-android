@@ -102,19 +102,19 @@
     <!--    /////////////////////////// floating action bar section ////////////////////-->
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/qr_fba"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20sp"
-        android:backgroundTint="@color/light_vilote"
-        android:src="@drawable/qr_code_icon"
-        app:layout_constraintBottom_toTopOf="@id/add_fba"
-        app:layout_constraintEnd_toEndOf="@id/add_fba"
-        app:shapeAppearance="@style/Widget.Material3.CircularProgressIndicator"
-        app:tint="@color/vilote"
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/qr_fba"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="20sp"-->
+<!--        android:backgroundTint="@color/light_vilote"-->
+<!--        android:src="@drawable/qr_code_icon"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/add_fba"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/add_fba"-->
+<!--        app:shapeAppearance="@style/Widget.Material3.CircularProgressIndicator"-->
+<!--        app:tint="@color/vilote"-->
 
-        />
+<!--        />-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_fba"
