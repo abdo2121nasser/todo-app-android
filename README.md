@@ -72,8 +72,7 @@ An Android application that allows users to manage their tasks efficiently. Buil
 ---
 ## 📽️ Demo Video
 
-> 📎
-> https://github.com/user-attachments/assets/1941bc9b-6387-421f-999c-67099f84620f
+ https://github.com/user-attachments/assets/1941bc9b-6387-421f-999c-67099f84620f
 
 
 ---
